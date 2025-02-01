@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Home, User, Briefcase, FileText, Code, Send } from 'lucide-react';
-
+ 
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
@@ -94,11 +95,11 @@ const HomeSection = () => (
         alt="Profile" 
         className="w-full max-w-md rounded-lg shadow-lg"
       />
-      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
+      <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
         <span className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity">
-          Welcome to My Portfolio
+          Welcome to My Portfolio   
         </span>
-      </div> 
+      </div>
     </motion.div>
   </div>
 );
@@ -274,6 +275,6 @@ const ProjectsSection = () => (
       ))}
     </div>
   </div>
-);
+); 
 
 export default PortfolioWebsite;
