@@ -90,7 +90,7 @@ const HomeSection = () => (
       whileHover={{ scale: 1.05 }}
     >
       <img 
-        src="/api/placeholder/500/600" 
+        src="http://fakeimg.pl/500x600?text=My Profile&font=bebas" 
         alt="Profile" 
         className="w-full max-w-md rounded-lg shadow-lg"
       />
@@ -98,7 +98,7 @@ const HomeSection = () => (
         <span className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity">
           Welcome to My Portfolio
         </span>
-      </div>
+      </div> 
     </motion.div>
   </div>
 );
