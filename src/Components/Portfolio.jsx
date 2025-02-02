@@ -26,18 +26,19 @@ const PortfolioWebsite = () => {
   const sections = [
     { key: 'home', icon: Home, label: 'Home' },
     { key: 'about', icon: User, label: 'About' },
-    { key: 'experience', icon: Briefcase, label: 'Experience' },
     { key: 'education', icon: FileText, label: 'Education' },
+    { key: 'experience', icon: Briefcase, label: 'Experience' },
     { key: 'projects', icon: Code, label: 'Projects' },
     { key: 'contact', icon: Send, label: 'Contact' }
   ];
+
 
   const renderSection = () => {
     const sectionComponents = {
       home: <HomeSection />,
       about: <AboutSection />,
-      experience: <ExperienceSection />,
       education: <EducationSection />,
+      experience: <ExperienceSection />,
       projects: <ProjectsSection />,
       contact: <ContactSection />
     };
@@ -47,7 +48,7 @@ const PortfolioWebsite = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar Navigation */}
-      <nav className="w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8">
+      <nav className="fixed top-0 left-0 w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8 h-full z-10">
         {sections.map(({ key, icon: Icon, label }) => (
           <motion.button
             key={key}
@@ -77,7 +78,7 @@ const PortfolioWebsite = () => {
       </nav>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 ml-20 p-8 overflow-y-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSection}
@@ -329,68 +330,189 @@ const AboutSection = () => (
   </div>
 );
 
+const EducationSection = () => (
+    <div>
+      <h2 className="text-3xl font-bold mb-6">Education</h2>
+      <div className="space-y-6">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold">Bachelor of Computer Applications</h3>
+          <p className="text-gray-600">Yenepoya University</p>
+          <p className="text-gray-500">July 2024 - Present</p>  
+          <p className="mt-2 font-semibold">Skills Gained:</p>
+          <ul className="list-disc ml-6">
+            <li>Programming in C</li>
+            <li>Data Structures and Algorithms</li>
+            <li>Database Management Systems</li>
+            <li>Problem-solving and Critical Thinking</li>
+          </ul>
+        </div>
+        {/* Plus two */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold">Senior Secondary</h3>
+          <p className="text-gray-600">HMS Higher Secondary</p>
+          <p className="text-gray-500">July 2022 - March 2024</p>  
+          <p className="text-gray-600">Steam: Science</p>
+          <p className="text-gray-600">Grade: 87%</p>
+        </div>
+        {/* Darul Irfan */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold">Secondary</h3>
+          <p className="text-gray-600">Darul Irfan Academy</p>
+          <p className="text-gray-500">July 2016 - March 2022</p>  
+          <p className="mt-2 font-semibold">Skills Gained:</p>
+          <ul className="list-disc ml-6">
+            <li>Many softwares</li>
+            <li>Literature</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+);
 
 const ExperienceSection = () => (
   <div>
     <h2 className="text-3xl font-bold mb-6">Professional Experience</h2>
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold">Graphic Designer</h3>
-        <p className="text-gray-600">Company Name | Date Range</p>
+        <h3 className="text-xl font-semibold">Financial Accountant</h3>
+        <p className="text-gray-600">Pompano Arabian Seafood Restaurant</p>
+        <p className="text-gray-500">Jun 2024 - Nov 2024 · 6 mos</p>
         <ul className="list-disc list-inside mt-2">
-          <li>Brief description of graphic design role</li>
-          <li>Key achievements and responsibilities</li>
+          <li>Collaborated with a colleague to create a Google Sheet for automating daily and monthly stock, expense, and profit calculations</li>
+          <li>Streamlined stock tracking processes, reducing errors and improving efficiency by 40%</li>
+          <li>Prepared detailed daily and monthly financial reports to support decision-making</li>
         </ul>
       </div>
+
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold">Data Analytics Internship/Role</h3>
-        <p className="text-gray-600">Company Name | Date Range</p>
+        <h3 className="text-xl font-semibold">Technical Manager</h3>
+        <p className="text-gray-600">Riplex Influencer Marketing Agency</p>
+        <p className="text-gray-500">Jun 2023 - Nov 2023 · 6 mos</p>
         <ul className="list-disc list-inside mt-2">
-          <li>Data analysis projects</li>
-          <li>Technologies and tools used</li>
+          <li>Automated campaign performance reporting using tools like Google Sheets and Excel, reducing manual work by 30%</li>
+          <li>Analyzed audience engagement metrics to identify trends and improve campaign effectiveness</li>
+          <li>Designed Instagram posts to align with campaign goals and enhance brand visibility</li>
         </ul>
       </div>
+
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-xl font-semibold"> Freelance Graphic Designer</h3>
+        <a 
+          href="https://www.instagram.com/magictool.creative.hub/" 
+          className="text-gray-600 italic underline hover:text-blue-500 hover:underline"
+        >
+          Instagram Page
+        </a>
+        <p className="text-gray-500">Jan 2021 - Oct 2024 · 3 yrs 10 mos</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Delivered custom graphic design solutions, including branding, social media posts, and marketing materi als, to help clients enhance their visual identity</li>
+          <li>Collaborated with clients to understand their needs and provided creative designs that aligned with their business goals, improving customer engagement</li>
+          <li>Delivered custom graphic design solutions for branding, social media posts, and marketing materials, collaborating with clients to create designs aligned with their business goals.</li>
+        </ul>
+      </div>
+
     </div>
   </div>
 );
 
-const EducationSection = () => (
-  <div>
-    <h2 className="text-3xl font-bold mb-6">Education</h2>
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold">Data Analytics Certification/Degree</h3>
-      <p className="text-gray-600">Institution Name | Graduation Date</p>
-      <p className="mt-2">Relevant coursework, key learnings, projects</p>
-    </div>
-  </div>
-);
+const ProjectsSection = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState('');
 
-const ProjectsSection = () => (
-  <div>
-    <h2 className="text-3xl font-bold mb-6">Data Science Projects</h2>
-    <div className="grid md:grid-cols-2 gap-6">
-      {[1, 2, 3].map((project) => (
-        <div key={project} className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold">Project {project} Title</h3>
-          <p>Brief project description, technologies used</p>
-          <div className="mt-4">
-            <a 
-              href="#" 
-              className="text-blue-600 hover:underline mr-4"
+  const openModal = (url) => {
+    setPdfUrl(url);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setPdfUrl('');
+  };
+
+  return (
+    <div>
+      <h2 className="text-3xl font-bold mb-6">Courses & Data Science Projects</h2>
+
+      {/* Courses Section */}
+      <div className="mb-8">
+        <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[1, 2, 3].map((course) => (
+            <div
+              key={course}
+              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
             >
-              View Project
-            </a>
-            <a 
-              href="#" 
-              className="text-blue-600 hover:underline"
+              <h4 className="text-xl font-semibold">Course {course} Title</h4>
+              <p className="text-gray-600">Certificate: Certificate Name</p>
+              <p className="text-gray-600">Issued By: Issuing Organization</p>
+              <p className="text-gray-600">Issue Date: 01/01/2024</p>
+              <p className="text-gray-600">Credential ID: ABC12345</p>
+              <p className="text-gray-600">Credential URL: <a href="#" className="text-blue-600 hover:underline">View</a></p>
+              <p className="text-gray-600">Skills Gained: Data Analysis, Machine Learning</p>
+
+              {/* Add a Button to Upload PDF */}
+              <div className="mt-4">
+                <button
+                  className="text-blue-600 hover:underline"
+                  onClick={() => openModal('/path/to/certificate.pdf')}
+                >
+                  View Certificate PDF
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal for PDF */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-3xl w-full relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
-              GitHub Repo
-            </a>
+              X
+            </button>
+            <iframe
+              src={pdfUrl}
+              width="100%"
+              height="600px"
+              title="Certificate"
+              frameBorder="0"
+            ></iframe>
           </div>
         </div>
-      ))}
+      )}
+
+      {/* Projects Section */}
+      <div>
+        <h3 className="text-2xl font-semibold mb-4">Data Science Projects</h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[1, 2, 3].map((project) => (
+            <div key={project} className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-xl font-semibold">Project {project} Title</h4>
+              <p>Brief project description, technologies used</p>
+              <div className="mt-4">
+                <a
+                  href="#"
+                  className="text-blue-600 hover:underline mr-4"
+                >
+                  View Project
+                </a>
+                <a
+                  href="#"
+                  className="text-blue-600 hover:underline"
+                >
+                  GitHub Repo
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-); 
+  );
+};
 
 export default PortfolioWebsite;
