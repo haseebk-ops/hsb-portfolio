@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { Home, User, Briefcase, FileText, Code, Send } from 'lucide-react';
+import { 
+  Home, 
+  User, 
+  Briefcase, 
+  FileText, 
+  Code, 
+  Send,
+  Phone, 
+  Mail, 
+  Linkedin, 
+  MapPin } from 'lucide-react';
  
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -37,7 +47,7 @@ const PortfolioWebsite = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar Navigation */}
-      <nav className="w-20 bg-white shadow-lg flex flex-col items-center py-8">
+      <nav className="w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8">
         {sections.map(({ key, icon: Icon, label }) => (
           <motion.button
             key={key}
@@ -84,57 +94,59 @@ const PortfolioWebsite = () => {
   );
 };
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Phone, 
-  Mail, 
-  Linkedin, 
-  MapPin 
-} from 'lucide-react';
+
 
 const HomeSection = () => (
   <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12 p-6">
     {/* Profile Photo */}
     <motion.div 
-      className="w-64 h-64 rounded-full overflow-hidden shadow-lg border-4 border-blue-500"
+      className="w-58 h-74 rounded-lg overflow-hidden shadow-lg border-4 border-blue-500"
       whileHover={{ scale: 1.05 }}
     >
       <img 
-        src="/api/placeholder/256/256" 
+        src="IMG_03227.jpeg"
         alt="Professional Profile" 
         className="w-full h-full object-cover"
       />
-    </motion.div>
+</motion.div>
+
 
     {/* Personal Details */}
     <div className="text-left max-w-lg">
-      <h1 className="text-4xl font-bold mb-2 text-gray-800">Your Full Name</h1>
-      <h2 className="text-2xl text-blue-600 mb-4">Data Scientist | Former Graphic Designer</h2>
+      <h1 className="text-4xl font-bold mb-2 text-gray-800">Haseeb K</h1>
+      <h2 className="text-2xl text-blue-600 mb-4">Data Analyst</h2>
 
       {/* Contact Information */}
       <div className="space-y-3 mb-6">
         <div className="flex items-center">
           <Phone className="mr-3 text-gray-600" />
-          <span>+1 (123) 456-7890</span>
+          <span>+91 97455 81670</span>
         </div>
         <div className="flex items-center">
           <Mail className="mr-3 text-gray-600" />
-          <span>your.email@example.com</span>
+          <span>create.haseeb@gmail.com</span>
         </div>
         <div className="flex items-center">
           <MapPin className="mr-3 text-gray-600" />
-          <span>City, State, Country</span>
+          <span>Edavanna, Kerala, India</span>
         </div>
       </div>
 
       {/* Social Links */}
+      {/* Linked IN */}
       <div className="flex space-x-4 mb-6">
-        <a href="#" className="hover:text-blue-500">
-          <Linkedin size={24} />
-        </a>
         <motion.a 
           href="#" 
+          className="hover:text-blue-500"
+          whileHover={{ scale: 1.2 }}
+        >
+          <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
+            <Linkedin size={24} />
+          </a>
+        </motion.a>
+        {/* GitHub */}
+        <motion.a 
+          href="https://github.com/haseeb-ops" 
           className="hover:text-blue-500"
           whileHover={{ scale: 1.2 }}
         >
@@ -152,38 +164,35 @@ const HomeSection = () => (
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
           </svg>
         </motion.a>
+        {/* CV */}
+        <motion.a 
+          href="Haseeb New CV.pdf" 
+          className="hover:text-blue-500"
+          whileHover={{ scale: 1.2 }}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M6 2H18a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm12 0V6H6V4h12zM8 6h8M8 10h8M8 14h4"></path>
+          </svg>
+        </motion.a>
+
       </div>
 
       {/* Professional Summary */}
-      <div className="bg-gray-100 p-4 rounded-lg">
+      <div className="bg-blue-100 p-4 rounded-lg">
         <h3 className="text-xl font-semibold mb-2">Professional Summary</h3>
         <p className="text-gray-700">
-          Passionate data scientist transitioning from graphic design, 
-          combining creative problem-solving with analytical skills. 
-          Experienced in transforming complex data into meaningful insights.
+        Passionate about data science, exploring data analytics, programming, and problem-solving. Driven by curiosity to leverage data for informed decision-making and continuous learning.
         </p>
-      </div>
-
-      {/* Page Summaries */}
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold mb-2">Portfolio Overview</h3>
-        <ul className="list-disc list-inside text-gray-700 space-y-2">
-          <li>
-            <strong>About:</strong> Detailed professional journey and technical skills
-          </li>
-          <li>
-            <strong>Experience:</strong> Professional roles and achievements
-          </li>
-          <li>
-            <strong>Education:</strong> Academic background and certifications
-          </li>
-          <li>
-            <strong>Projects:</strong> Showcase of data science and analytics work
-          </li>
-          <li>
-            <strong>Contact:</strong> Ways to connect and collaborate
-          </li>
-        </ul>
       </div>
     </div>
   </div>
@@ -281,14 +290,35 @@ const AboutSection = () => (
       <div>
         <h3 className="text-xl font-semibold mb-4">Professional Profile</h3>
         <p>
-          Detail your journey from graphic design to data science. Highlight transferable 
-          skills like visual communication, attention to detail, and creative problem-solving.
+        Hello, I'm Haseeb, a degree student with a passion for data science. Currently, 
+        I am exploring the vast world of data and honing my skills in analytics, programming, 
+        and problem-solving. My curiosity and drive for continuous learning guide me as I deepen my 
+        understanding of how data can be leveraged to make better decisions.
+        </p><br />
+        <p> 
+        As an individual who enjoys both technical challenges and creative thinking, I am always seeking 
+        new ways to apply my knowledge and skills. Outside of my studies, I enjoy working with various tools 
+        and techniques that allow me to connect the dots between complex datasets and real-world applications.
+        </p><br />
+        <p>
+        Thank you for visiting my website! I appreciate you taking the time to read a little about me.😊
         </p>
       </div>
+      {/* Skills */}
       <div>
         <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
         <div className="flex flex-wrap gap-2">
-          {['Python', 'R', 'SQL', 'Tableau', 'Machine Learning', 'Data Visualization'].map(skill => (
+          {['Python', 'SQL', 'Data Analysis', 'Data Visualization'].map(skill => (
+            <span key={skill} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+              {skill}
+            </span>
+          ))}
+        </div>
+        {/* Software Skills */}
+          <br />
+        <h3 className="text-xl font-semibold mb-4">Software Skills</h3>
+        <div className="flex flex-wrap gap-2">
+          {['Adobe Photoshop', 'Adobe Illustrator', 'Excel', 'Access', 'Microsoft Office', 'Power BI', 'Adobe InDesign'].map(skill => (
             <span key={skill} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
               {skill}
             </span>
@@ -298,6 +328,7 @@ const AboutSection = () => (
     </div>
   </div>
 );
+
 
 const ExperienceSection = () => (
   <div>
