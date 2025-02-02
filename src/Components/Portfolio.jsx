@@ -84,23 +84,108 @@ const PortfolioWebsite = () => {
   );
 };
 
+import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Phone, 
+  Mail, 
+  Linkedin, 
+  MapPin 
+} from 'lucide-react';
+
 const HomeSection = () => (
-  <div className="flex justify-center items-center h-full">
+  <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12 p-6">
+    {/* Profile Photo */}
     <motion.div 
-      className="relative group"
+      className="w-64 h-64 rounded-full overflow-hidden shadow-lg border-4 border-blue-500"
       whileHover={{ scale: 1.05 }}
     >
       <img 
-        src="http://fakeimg.pl/500x600?text=My Profile&font=bebas" 
-        alt="Profile" 
-        className="w-full max-w-md rounded-lg shadow-lg"
+        src="/api/placeholder/256/256" 
+        alt="Professional Profile" 
+        className="w-full h-full object-cover"
       />
-      <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-        <span className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity">
-          Welcome to My Portfolio   
-        </span>
-      </div>
     </motion.div>
+
+    {/* Personal Details */}
+    <div className="text-left max-w-lg">
+      <h1 className="text-4xl font-bold mb-2 text-gray-800">Your Full Name</h1>
+      <h2 className="text-2xl text-blue-600 mb-4">Data Scientist | Former Graphic Designer</h2>
+
+      {/* Contact Information */}
+      <div className="space-y-3 mb-6">
+        <div className="flex items-center">
+          <Phone className="mr-3 text-gray-600" />
+          <span>+1 (123) 456-7890</span>
+        </div>
+        <div className="flex items-center">
+          <Mail className="mr-3 text-gray-600" />
+          <span>your.email@example.com</span>
+        </div>
+        <div className="flex items-center">
+          <MapPin className="mr-3 text-gray-600" />
+          <span>City, State, Country</span>
+        </div>
+      </div>
+
+      {/* Social Links */}
+      <div className="flex space-x-4 mb-6">
+        <a href="#" className="hover:text-blue-500">
+          <Linkedin size={24} />
+        </a>
+        <motion.a 
+          href="#" 
+          className="hover:text-blue-500"
+          whileHover={{ scale: 1.2 }}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </motion.a>
+      </div>
+
+      {/* Professional Summary */}
+      <div className="bg-gray-100 p-4 rounded-lg">
+        <h3 className="text-xl font-semibold mb-2">Professional Summary</h3>
+        <p className="text-gray-700">
+          Passionate data scientist transitioning from graphic design, 
+          combining creative problem-solving with analytical skills. 
+          Experienced in transforming complex data into meaningful insights.
+        </p>
+      </div>
+
+      {/* Page Summaries */}
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold mb-2">Portfolio Overview</h3>
+        <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <li>
+            <strong>About:</strong> Detailed professional journey and technical skills
+          </li>
+          <li>
+            <strong>Experience:</strong> Professional roles and achievements
+          </li>
+          <li>
+            <strong>Education:</strong> Academic background and certifications
+          </li>
+          <li>
+            <strong>Projects:</strong> Showcase of data science and analytics work
+          </li>
+          <li>
+            <strong>Contact:</strong> Ways to connect and collaborate
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 );
 
