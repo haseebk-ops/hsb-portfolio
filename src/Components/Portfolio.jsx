@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { 
+import {
+  Tag,
+  Clock,
+  TrendingUp,
   X,
   Home, 
-  User, 
+  User,
+  Search, 
+  ArrowLeft,
   Briefcase, 
   FileText, 
   Code, 
   Send,
+  Notebook,
   Phone, 
-  Mail, 
+  Mail,
+  Loader ,
   Linkedin, 
   MapPin } from 'lucide-react';
  
@@ -30,6 +37,7 @@ const PortfolioWebsite = () => {
     { key: 'education', icon: FileText, label: 'Education' },
     { key: 'experience', icon: Briefcase, label: 'Experience' },
     { key: 'projects', icon: Code, label: 'Projects' },
+    { key: 'blog', icon: Notebook, label: 'Blog' },
     { key: 'contact', icon: Send, label: 'Contact' }
   ];
 
@@ -41,6 +49,7 @@ const PortfolioWebsite = () => {
       education: <EducationSection />,
       experience: <ExperienceSection />,
       projects: <ProjectsSection />,
+      blog: <BlogPage />,
       contact: <ContactSection />
     };
     return sectionComponents[activeSection];
@@ -467,6 +476,8 @@ const PDFModal = ({ isOpen, onClose, pdfUrl }) => {
   );
 };
 
+
+// Project Section -- Main
 const ProjectsSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
@@ -612,5 +623,243 @@ const ProjectsSection = () => {
     </div>
   );
 };
+
+
+
+const BlogPage = () => {
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Simulated loading for demo purposes
+  const simulateLoading = (callback) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      callback();
+    }, 500);
+  };
+
+  const handleReadMore = (post) => {
+    setIsTransitioning(true);
+    simulateLoading(() => {
+      setSelectedPost(post);
+      setIsTransitioning(false);
+    });
+  };
+
+  const handleBackToList = () => {
+    setIsTransitioning(true);
+    simulateLoading(() => {
+      setSelectedPost(null);
+      setIsTransitioning(false);
+    });
+  };
+
+  const handleCategoryChange = (category) => {
+    setIsLoading(true);
+    simulateLoading(() => {
+      setSelectedCategory(category);
+    });
+  };
+
+  // Sample blog data - replace with your actual data
+  const blogPosts = [
+    {
+      id: 1,
+      title: "Getting Started with React",
+      excerpt: "Learn the basics of React and how to build your first component",
+      content: "React is a powerful JavaScript library for building user interfaces. In this comprehensive guide, we'll explore the fundamental concepts of React and walk through building your first component. We'll cover topics like JSX, props, state, and component lifecycle methods.",
+      category: "Development",
+      date: "2025-01-15",
+      isFeatured: true,
+      image: "/api/placeholder/400/250"
+    },
+    {
+      id: 2,
+      title: "Mastering CSS Grid",
+      excerpt: "A comprehensive guide to CSS Grid layout system",
+      content: "CSS Grid is a revolutionary layout system that has transformed how we design web layouts. This in-depth guide covers everything from basic grid concepts to advanced layout techniques. Learn how to create responsive, complex layouts with minimal code.",
+      category: "Design",
+      date: "2025-01-10",
+      isFeatured: true,
+      image: "/api/placeholder/400/250"
+    },
+    {
+      id: 3,
+      title: "JavaScript Best Practices",
+      excerpt: "Write cleaner and more efficient JavaScript code",
+      content: "Discover the best practices for writing maintainable and efficient JavaScript code. We'll discuss code organization, performance optimization, error handling, and modern JavaScript features that will help you become a better developer.",
+      category: "Development",
+      date: "2025-01-05",
+      isFeatured: false,
+      image: "/api/placeholder/400/250"
+    }
+  ];
+  const categories = ["All", "Development", "Design", "Career", "Tips"];
+
+  // Filter posts based on search and category
+  const filteredPosts = blogPosts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const featuredPosts = filteredPosts.filter(post => post.isFeatured);
+  const regularPosts = filteredPosts.filter(post => !post.isFeatured);
+
+  // Loading overlay component
+  const LoadingOverlay = () => (
+    <div className="fixed inset-0 bg-white/80 flex items-center justify-center z-50">
+      <div className="animate-spin">
+        <Loader size={40} className="text-blue-500" />
+      </div>
+    </div>
+  );
+
+  if (selectedPost) {
+    return (
+      <div className={`max-w-4xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+        {isLoading && <LoadingOverlay />}
+        
+        <button 
+          onClick={handleBackToList}
+          className="flex items-center text-blue-500 hover:text-blue-600 mb-8 transition-transform duration-300 hover:-translate-x-1"
+        >
+          <ArrowLeft className="mr-2" size={20} />
+          Back to Posts
+        </button>
+        
+        <article className="animate-fadeIn">
+          <img 
+            src={selectedPost.image} 
+            alt={selectedPost.title}
+            className="w-full h-64 object-cover rounded-lg mb-8 transition-transform duration-500 hover:scale-[1.02]"
+          />
+          <div className="space-y-4">
+            <span className="text-sm text-blue-500 inline-block transition-colors duration-300">{selectedPost.category}</span>
+            <h1 className="text-4xl font-bold">{selectedPost.title}</h1>
+            <p className="text-gray-500">
+              {new Date(selectedPost.date).toLocaleDateString()}
+            </p>
+            <div className="prose max-w-none">
+              <p className="text-gray-700 leading-relaxed">
+                {selectedPost.content}
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`max-w-6xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+      {isLoading && <LoadingOverlay />}
+      
+      <h1 className="text-4xl font-bold mb-8 animate-fadeIn">Blog</h1>
+      
+      <div className="mb-8 space-y-4">
+        <div className="relative transition-transform duration-300 hover:scale-[1.01]">
+          <input
+            type="text"
+            placeholder="Search posts..."
+            className="w-full p-3 pl-10 border rounded-lg transition-shadow duration-300 hover:shadow-md"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+        </div>
+        
+        <div className="flex gap-2 flex-wrap">
+          {categories.map(category => (
+            <button
+              key={category}
+              className={`px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === category
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {featuredPosts.length > 0 && (
+        <div className="mb-12 animate-fadeIn">
+          <h2 className="text-2xl font-bold mb-6">Featured Posts</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {featuredPosts.map(post => (
+              <div 
+                key={post.id} 
+                className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+              >
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div className="p-6">
+                  <span className="text-sm text-blue-500">{post.category}</span>
+                  <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">
+                      {new Date(post.date).toLocaleDateString()}
+                    </span>
+                    <button 
+                      className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+                      onClick={() => handleReadMore(post)}
+                    >
+                      Read More →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {regularPosts.map(post => (
+          <div 
+            key={post.id} 
+            className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+          >
+            <img 
+              src={post.image} 
+              alt={post.title}
+              className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+            />
+            <div className="p-6">
+              <span className="text-sm text-blue-500">{post.category}</span>
+              <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+              <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  {new Date(post.date).toLocaleDateString()}
+                </span>
+                <button 
+                  className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+                  onClick={() => handleReadMore(post)}
+                >
+                  Read More →
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 export default PortfolioWebsite;
