@@ -26,7 +26,7 @@ const PortfolioWebsite = () => {
     { key: 'about', icon: User, label: 'About' },
     { key: 'education', icon: FileText, label: 'Education' },
     { key: 'experience', icon: Briefcase, label: 'Experience' },
-    { key: 'projects', icon: Code, label: 'Projects' },
+    { key: 'projects', icon: Code, label: 'Courses' },
     { key: 'blog', icon: Notebook, label: 'Blog' },
     { key: 'contact', icon: Send, label: 'Contact' }
   ];
