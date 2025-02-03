@@ -309,7 +309,7 @@ const AboutSection = () => (
       <div>
         <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
         <div className="flex flex-wrap gap-2">
-          {['Python', 'SQL', 'Data Analysis', 'Data Visualization'].map(skill => (
+          {['Python', 'SQL', 'Data Analysis', 'Data Visualization', 'Ai Tools'].map(skill => (
             <span key={skill} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
               {skill}
             </span>
@@ -431,36 +431,82 @@ const ProjectsSection = () => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold mb-6">Courses & Data Science Projects</h2>
+      <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2>
 
       {/* Courses Section */}
-      <div className="mb-8">
+      <div className="mb-8">  
         <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3>
         <div className="grid md:grid-cols-2 gap-6">
-          {[1, 2, 3].map((course) => (
-            <div
-              key={course}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-            >
-              <h4 className="text-xl font-semibold">Course {course} Title</h4>
-              <p className="text-gray-600">Certificate: Certificate Name</p>
-              <p className="text-gray-600">Issued By: Issuing Organization</p>
-              <p className="text-gray-600">Issue Date: 01/01/2024</p>
-              <p className="text-gray-600">Credential ID: ABC12345</p>
-              <p className="text-gray-600">Credential URL: <a href="#" className="text-blue-600 hover:underline">View</a></p>
-              <p className="text-gray-600">Skills Gained: Data Analysis, Machine Learning</p>
-
-              {/* Add a Button to Upload PDF */}
-              <div className="mt-4">
-                <button
-                  className="text-blue-600 hover:underline"
-                  onClick={() => openModal('/path/to/certificate.pdf')}
-                >
-                  View Certificate PDF
-                </button>
-              </div>
+          {/* Certificate 1 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            <h4 className="text-xl font-semibold">Data Analysis with Spreadsheets and SQL</h4>
+            <p className="text-gray-600">Issued By: Meta</p>
+            <p className="text-gray-600">Issue Date: February 2025</p>
+            <p className="text-gray-600">Credential ID: ZF5LOYO73PRJ</p>
+            <p className="text-gray-600">
+              Credential URL: <a href="https://www.coursera.org/account/accomplishments/verify/ZF5LOYO73PRJ" className="text-blue-600 hover:underline">View</a>
+            </p>
+            <p className="text-gray-600">Skills Gained: Data Analysis, Machine Learning</p>
+            <div className="mt-4">
+              <button className="text-blue-600 hover:underline" onClick={() => openModal('DA2.pdf')}>
+                View Certificate PDF
+              </button>
             </div>
-          ))}
+          </div>
+
+          {/* Certificate 2 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            <h4 className="text-xl font-semibold">Introduction to Data Analytics</h4>
+            <p className="text-gray-600">Issued By: Meta</p>
+            <p className="text-gray-600">Issue Date: January 2025</p>
+            <p className="text-gray-600">Credential ID: 46A0BUNP8V8W</p>
+            <p className="text-gray-600">
+              Credential URL: <a href="https://www.coursera.org/account/accomplishments/verify/46A0BUNP8V8W" className="text-blue-600 hover:underline">View</a>
+            </p>
+            <p className="text-gray-600">Skills Gained: Data Analysis</p>
+            <div className="mt-4">
+              <button className="text-blue-600 hover:underline" onClick={() => openModal('DA1.pdf')}>
+                View Certificate PDF
+              </button>
+            </div>
+          </div>
+
+          {/* Certificate 3 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            <h4 className="text-xl font-semibold">Introduction to Data Analysis using Microsoft Excel</h4>
+            <p className="text-gray-600">Issued By: Coursera Project Network</p>
+            <p className="text-gray-600">Issue Date: August 2024</p>
+            <p className="text-gray-600">Credential ID: SRYB8Q35SLZ2</p>
+            <p className="text-gray-600">
+              Credential URL: <a href="https://www.coursera.org/account/accomplishments/verify/SRYB8Q35SLZ2" className="text-blue-600 hover:underline">View</a>
+            </p>
+            <p className="text-gray-600">Skills Gained: Microsoft Excel</p>
+            <div className="mt-4">
+              <button className="text-blue-600 hover:underline" onClick={() => openModal('EX1.pdf')}>
+                View Certificate PDF
+              </button>
+            </div>
+          </div>
+
+          {/* Certificate 4 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            <h4 className="text-xl font-semibold">Web Development With HTML</h4>
+            <p className="text-gray-600">Issued By: Edapt</p>
+            <p className="text-gray-600">Issue Date: June 2022</p>
+            <p className="text-gray-600">Credential ID: EDPT1655911527629M</p>
+            {/* <p className="text-gray-600">Credential URL: <a href="#" className="text-blue-600 hover:underline">View</a></p> */}
+            <p className="text-gray-600">Skills Gained: HTML, Cascading Style Sheets (CSS)</p>
+
+            {/* Add a Button to Upload PDF */}
+            <div className="mt-4">
+              <button
+                className="text-blue-600 hover:underline"
+                onClick={() => openModal('Untitled-1.png')}
+              >
+                View Certificate PDF
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -487,7 +533,7 @@ const ProjectsSection = () => {
 
       {/* Projects Section */}
       <div>
-        <h3 className="text-2xl font-semibold mb-4">Data Science Projects</h3>
+        <h3 className="text-2xl font-semibold mb-4">Projects</h3>
         <div className="grid md:grid-cols-2 gap-6">
           {[1, 2, 3].map((project) => (
             <div key={project} className="bg-white p-6 rounded-lg shadow-md">
