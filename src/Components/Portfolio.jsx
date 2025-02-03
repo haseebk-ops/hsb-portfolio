@@ -2,24 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import {
-  Tag,
-  Clock,
-  TrendingUp,
-  X,
-  Home, 
-  User,
-  Search, 
-  ArrowLeft,
-  Briefcase, 
-  FileText, 
-  Code, 
-  Send,
-  Notebook,
-  Phone, 
-  Mail,
-  Loader ,
-  Linkedin, 
-  MapPin } from 'lucide-react';
+  X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, 
+  Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram } from 'lucide-react';
  
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -105,7 +89,7 @@ const PortfolioWebsite = () => {
   );
 };
 
-
+// Home Section
 
 const HomeSection = () => (
   <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12 p-6">
@@ -128,24 +112,24 @@ const HomeSection = () => (
       <h2 className="text-2xl text-blue-600 mb-4">Data Analyst</h2>
 
       {/* Contact Information */}
-      <div className="space-y-3 mb-6">
+      <div className="space-y-5 mb-6">
         <div className="flex items-center">
-          <Phone className="mr-3 text-gray-600" />
+          <Phone size={20} className="mr-3 text-gray-600" />
           <span>+91 97455 81670</span>
         </div>
         <div className="flex items-center">
-          <Mail className="mr-3 text-gray-600" />
+          <Mail size={20} className="mr-3 text-gray-600" />
           <span>create.haseeb@gmail.com</span>
         </div>
         <div className="flex items-center">
-          <MapPin className="mr-3 text-gray-600" />
+          <MapPin size={20} className="mr-3 text-gray-600" />
           <span>Edavanna, Kerala, India</span>
         </div>
       </div>
 
       {/* Social Links */}
       {/* Linked IN */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex space-x-5 mb-6">
         <motion.a 
           href="#" 
           className="hover:text-blue-500"
@@ -157,45 +141,24 @@ const HomeSection = () => (
         </motion.a>
         {/* GitHub */}
         <motion.a 
-          href="https://github.com/haseeb-ops" 
+          href="#" 
           className="hover:text-blue-500"
           whileHover={{ scale: 1.2 }}
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-          </svg>
+          <a href="https://github.com/haseeb-ops" className="hover:text-blue-500">
+            <Github size={24} />
+          </a>
         </motion.a>
         {/* CV */}
         <motion.a 
-          href="/pdf/Haseeb New CV.pdf" 
+          href="#" 
           className="hover:text-blue-500"
           whileHover={{ scale: 1.2 }}
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <path d="M6 2H18a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm12 0V6H6V4h12zM8 6h8M8 10h8M8 14h4"></path>
-          </svg>
+          <a href="/pdf/Haseeb New CV.pdf" className="hover:text-blue-500">
+            <FileUser size={24} />
+          </a>
         </motion.a>
-
       </div>
 
       {/* Professional Summary */}
@@ -209,90 +172,160 @@ const HomeSection = () => (
   </div>
 );
 
+// Contact Section
+
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
-  const [submitStatus, setSubmitStatus] = useState('');
 
-  const handleSubmit = async (e) => {
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitStatus('Sending...');
-
-    try {
-      // Simulated form submission 
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        setSubmitStatus('Message sent successfully!');
-        // Reset form
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        setSubmitStatus('Failed to send message');
-      }
-    } catch (error) {
-      setSubmitStatus('Error sending message');
-      console.error('Submission error:', error);
+    if (validateForm()) {
+      // Here you would typically send the form data to a backend
+      console.log('Form submitted', formData);
+      alert('Message sent successfully!');
+      // Reset form after submission
+      setFormData({ name: '', email: '', message: '' });
     }
   };
 
   return (
-    <div>
-      <h2 className="text-3xl font-bold mb-6">Contact Me</h2>
-      <form onSubmit={handleSubmit} className="max-w-lg">
-        <div className="mb-4">
-          <input 
-            type="text" 
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="w-full p-2 border rounded-lg" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <input 
-            type="email" 
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-            className="w-full p-2 border rounded-lg" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <textarea 
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={(e) => setFormData({...formData, message: e.target.value})}
-            className="w-full p-2 border rounded-lg" 
-            rows="4"
-            required
-          ></textarea>
-        </div>
-        <button 
-          type="submit"
-          className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-        >
-          Send Message
-        </button>
-        {submitStatus && (
-          <p className="mt-4 text-center text-sm text-gray-600">
-            {submitStatus}
-          </p>
-        )}
-      </form>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-150 bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Contact Me</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 hover:shadow-lg transition-all duration-300
+                ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
+            />
+            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 hover:shadow-lg transition-all duration-300
+                ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
+            />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              value={formData.message}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 hover:shadow-lg transition-all duration-300
+                ${errors.message ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
+            ></textarea>
+            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+          </div>
+
+          <button
+            type="submit" 
+            className="w-full bg-blue-600 text-white py-2 shadow-md border-3 border-blue-600 rounded-full 
+                        hover:bg-transparent hover:text-blue-600 transition-all mb-6"
+          >
+            Send Message
+          </button>
+        </form>
+        {/* Social Links */}
+          {/* Linked IN */}
+          <div className="flex space-x-5 items-center justify-center">
+            <motion.a 
+              href="#" 
+              className="hover:text-blue-500"
+              whileHover={{ scale: 1.2 }}
+            >
+              <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
+                <Linkedin size={24} />
+              </a>
+            </motion.a>
+            {/* GitHub */}
+            <motion.a 
+              href="#" 
+              className="hover:text-blue-500"
+              whileHover={{ scale: 1.2 }}
+            >
+              <a href="https://github.com/haseeb-ops" className="hover:text-blue-500">
+                <Github size={24} />
+              </a>
+            </motion.a>
+            {/* CV */}
+            <motion.a 
+              href="#" 
+              className="hover:text-blue-500"
+              whileHover={{ scale: 1.2 }}
+            >
+              <a href="/pdf/Haseeb New CV.pdf" className="hover:text-blue-500">
+                <FileUser size={24} />
+              </a>
+            </motion.a>
+            {/* instagram */}
+            <motion.a 
+              href="#" 
+              className="hover:text-blue-500"
+              whileHover={{ scale: 1.2 }}
+            >
+              <a href="https://www.instagram.com/haseeb_shaah_/" className="hover:text-blue-500">
+                <Instagram size={24} />
+              </a>
+            </motion.a>
+          </div>      
+      </div>
     </div>
   );
 };
+
+// About Section
 
 const AboutSection = () => (
   <div>
@@ -340,6 +373,8 @@ const AboutSection = () => (
   </div>
 );
 
+// Education Section
+
 const EducationSection = () => (
     <div>
       <h2 className="text-3xl font-bold mb-6">Education</h2>
@@ -378,6 +413,8 @@ const EducationSection = () => (
       </div>
     </div>
 );
+
+// Experience Section
 
 const ExperienceSection = () => (
   <div>
@@ -424,6 +461,7 @@ const ExperienceSection = () => (
     </div>
   </div>
 );
+
 
 // PDF opening Model
 const PDFModal = ({ isOpen, onClose, pdfUrl }) => {
@@ -530,35 +568,36 @@ const ProjectsSection = () => {
     }
   ];
 
-  const projects = [
-    {
-      title: "Project 1",
-      description: "Brief project description, technologies used",
-      projectUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Project 2",
-      description: "Brief project description, technologies used",
-      projectUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Project 3",
-      description: "Brief project description, technologies used",
-      projectUrl: "#",
-      githubUrl: "#"
-    }
-  ];
+  // const projects = [
+  //   {
+  //     title: "Project 1",
+  //     description: "Brief project description, technologies used",
+  //     projectUrl: "#",
+  //     githubUrl: "#"
+  //   },
+  //   {
+  //     title: "Project 2",
+  //     description: "Brief project description, technologies used",
+  //     projectUrl: "#",
+  //     githubUrl: "#"
+  //   },
+  //   {
+  //     title: "Project 3",
+  //     description: "Brief project description, technologies used",
+  //     projectUrl: "#",
+  //     githubUrl: "#"
+  //   }
+  // ];
 
 
   return (
     <div>
-      <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2>
+      {/* <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2> */}
+      <h2 className="text-3xl font-bold mb-6">Courses</h2>
 
       {/* Courses Section */}
       <div className="mb-8">  
-        <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3>
+        {/* <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3> */}
 
         <div className="grid md:grid-cols-2 gap-6">
           {certificates.map((cert, index) => (
@@ -595,7 +634,7 @@ const ProjectsSection = () => {
       />
 
       {/* Projects Section */}
-      <div>
+      {/* <div>
         <h3 className="text-2xl font-semibold mb-4">Projects</h3>
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
@@ -619,12 +658,12 @@ const ProjectsSection = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-
+// Blog
 
 const BlogPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
