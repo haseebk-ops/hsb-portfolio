@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, 
-  Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram } from 'lucide-react';
- 
+  Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
+
+
+
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
@@ -665,240 +671,447 @@ const ProjectsSection = () => {
 
 // Blog
 
+// const BlogPage = () => {
+//   const [selectedPost, setSelectedPost] = useState(null);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [selectedCategory, setSelectedCategory] = useState("All");
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isTransitioning, setIsTransitioning] = useState(false);
+
+//   // Simulated loading for demo purposes
+//   const simulateLoading = (callback) => {
+//     setIsLoading(true);
+//     setTimeout(() => {
+//       setIsLoading(false);
+//       callback();
+//     }, 500);
+//   };
+
+//   const handleReadMore = (post) => {
+//     setIsTransitioning(true);
+//     simulateLoading(() => {
+//       setSelectedPost(post);
+//       setIsTransitioning(false);
+//     });
+//   };
+
+//   const handleBackToList = () => {
+//     setIsTransitioning(true);
+//     simulateLoading(() => {
+//       setSelectedPost(null);
+//       setIsTransitioning(false);
+//     });
+//   };
+
+//   const handleCategoryChange = (category) => {
+//     setIsLoading(true);
+//     simulateLoading(() => {
+//       setSelectedCategory(category);
+//     });
+//   };
+
+//   // Sample blog data - replace with your actual data
+//   const blogPosts = [
+//     {
+//       id: 1,
+//       title: "Understanding SQL Joins: A Comprehensive Guide",
+//       excerpt: "SQL Joins are a fundamental concept in database management, allowing you to combine data from multiple tables based on related columns.",
+//       content: "React is a powerful JavaScript library for building user interfaces. In this comprehensive guide, we'll explore the fundamental concepts of React and walk through building your first component. We'll cover topics like JSX, props, state, and component lifecycle methods.",
+//       category: "Data Analysis",
+//       date: "2025-01-15",
+//       isFeatured: true,
+//       image: "https://www.devtodev.com/upload/images/sql5_2.png"
+//     },
+//     {
+//       id: 2,
+//       title: "Mastering CSS Grid",
+//       excerpt: "A comprehensive guide to CSS Grid layout system",
+//       content: "CSS Grid is a revolutionary layout system that has transformed how we design web layouts. This in-depth guide covers everything from basic grid concepts to advanced layout techniques. Learn how to create responsive, complex layouts with minimal code.",
+//       category: "Design",
+//       date: "2025-01-10",
+//       isFeatured: true,
+//       image: "/api/placeholder/400/250"
+//     },
+//     {
+//       id: 3,
+//       title: "JavaScript Best Practices",
+//       excerpt: "Write cleaner and more efficient JavaScript code",
+//       content: "Discover the best practices for writing maintainable and efficient JavaScript code. We'll discuss code organization, performance optimization, error handling, and modern JavaScript features that will help you become a better developer.",
+//       category: "Development",
+//       date: "2025-01-05",
+//       isFeatured: false,
+//       image: "/api/placeholder/400/250"
+//     }
+//   ];
+//   const categories = ["All", "Data Analysis", "Development", "Design", "Career", "Tips"];
+
+//   // Filter posts based on search and category
+//   const filteredPosts = blogPosts.filter(post => {
+//     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+//     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
+//     return matchesSearch && matchesCategory;
+//   });
+
+//   const featuredPosts = filteredPosts.filter(post => post.isFeatured);
+//   const regularPosts = filteredPosts.filter(post => !post.isFeatured);
+
+//   // Loading overlay component
+//   const LoadingOverlay = () => (
+//     <div className="fixed inset-0 bg-white/80 flex items-center justify-center z-50">
+//       <div className="animate-spin">
+//         <Loader size={40} className="text-blue-500" />
+//       </div>
+//     </div>
+//   );
+
+//   if (selectedPost) {
+//     return (
+//       <div className={`max-w-4xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+//         {isLoading && <LoadingOverlay />}
+        
+//         <button 
+//           onClick={handleBackToList}
+//           className="flex items-center text-blue-500 hover:text-blue-600 mb-8 transition-transform duration-300 hover:-translate-x-1"
+//         >
+//           <ArrowLeft className="mr-2" size={20} />
+//           Back to Posts
+//         </button>
+        
+//         <article className="animate-fadeIn">
+//           <img 
+//             src={selectedPost.image} 
+//             alt={selectedPost.title}
+//             className="w-full h-64 object-cover rounded-lg mb-8 transition-transform duration-500 hover:scale-[1.02]"
+//           />
+//           <div className="space-y-4">
+//             <span className="text-sm text-blue-500 inline-block transition-colors duration-300">{selectedPost.category}</span>
+//             <h1 className="text-4xl font-bold">{selectedPost.title}</h1>
+//             <p className="text-gray-500">
+//               {new Date(selectedPost.date).toLocaleDateString()}
+//             </p>
+//             <div className="prose max-w-none">
+//               <p className="text-gray-700 leading-relaxed">
+//                 {selectedPost.content}
+//               </p>
+//             </div>
+//           </div>
+//         </article>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className={`max-w-6xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+//       {isLoading && <LoadingOverlay />}
+      
+//       <h1 className="text-4xl font-bold mb-8 animate-fadeIn">Blog</h1>
+      
+//       <div className="mb-8 space-y-4">
+//         <div className="relative transition-transform duration-300 hover:scale-[1.01]">
+//           <input
+//             type="text"
+//             placeholder="Search posts..."
+//             className="w-full p-3 pl-10 border rounded-lg transition-shadow duration-300 hover:shadow-md"
+//             value={searchTerm}
+//             onChange={(e) => setSearchTerm(e.target.value)}
+//           />
+//           <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+//         </div>
+        
+//         <div className="flex gap-2 flex-wrap">
+//           {categories.map(category => (
+//             <button
+//               key={category}
+//               className={`px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
+//                 selectedCategory === category
+//                   ? 'bg-blue-500 text-white shadow-md'
+//                   : 'bg-gray-200 hover:bg-gray-300'
+//               }`}
+//               onClick={() => handleCategoryChange(category)}
+//             >
+//               {category}
+//             </button>
+//           ))}
+//         </div>
+//       </div>
+
+//       {featuredPosts.length > 0 && (
+//         <div className="mb-12 animate-fadeIn">
+//           <h2 className="text-2xl font-bold mb-6">Featured Posts</h2>
+//           <div className="grid md:grid-cols-3 gap-8">
+//             {featuredPosts.map(post => (
+//               <div 
+//                 key={post.id} 
+//                 className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+//               >
+//                 <img 
+//                   src={post.image} 
+//                   alt={post.title}
+//                   className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+//                 />
+//                 <div className="p-6">
+//                   <span className="text-sm text-blue-500">{post.category}</span>
+//                   <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+//                   <p className="text-gray-600 mb-4">{post.excerpt}</p>
+//                   <div className="flex justify-between items-center">
+//                     <span className="text-sm text-gray-500">
+//                       {new Date(post.date).toLocaleDateString()}
+//                     </span>
+//                     <button 
+//                       className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+//                       onClick={() => handleReadMore(post)}
+//                     >
+//                       Read More →
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+
+//       <div className="grid md:grid-cols-3 gap-8">
+//         {regularPosts.map(post => (
+//           <div 
+//             key={post.id} 
+//             className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+//           >
+//             <img 
+//               src={post.image} 
+//               alt={post.title}
+//               className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+//             />
+//             <div className="p-6">
+//               <span className="text-sm text-blue-500">{post.category}</span>
+//               <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+//               <p className="text-gray-600 mb-4">{post.excerpt}</p>
+//               <div className="flex justify-between items-center">
+//                 <span className="text-sm text-gray-500">
+//                   {new Date(post.date).toLocaleDateString()}
+//                 </span>
+//                 <button 
+//                   className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+//                   onClick={() => handleReadMore(post)}
+//                 >
+//                   Read More →
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
 const BlogPage = () => {
+  const [blogPosts, setBlogPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [comments, setComments] = useState("");
 
-  // Simulated loading for demo purposes
-  const simulateLoading = (callback) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      callback();
-    }, 500);
-  };
+  useEffect(() => {
+    const fetchMarkdownFiles = async () => {
+      const postDates = [
+        { date: "2025-02-03", title: "Understanding SQL Joins" },
+        { date: "2025-01-10", title: "Mastering CSS Grid" },
+        { date: "2025-01-05", title: "JavaScript Best Practices" }
+      ]; // Custom titles added here
+      
+    
+    const categories = ["All", "Development", "Design", "Career", "Tips"];
 
-  const handleReadMore = (post) => {
-    setIsTransitioning(true);
-    simulateLoading(() => {
-      setSelectedPost(post);
-      setIsTransitioning(false);
-    });
-  };
-
-  const handleBackToList = () => {
-    setIsTransitioning(true);
-    simulateLoading(() => {
-      setSelectedPost(null);
-      setIsTransitioning(false);
-    });
-  };
-
-  const handleCategoryChange = (category) => {
-    setIsLoading(true);
-    simulateLoading(() => {
-      setSelectedCategory(category);
-    });
-  };
-
-  // Sample blog data - replace with your actual data
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Getting Started with React",
-      excerpt: "Learn the basics of React and how to build your first component",
-      content: "React is a powerful JavaScript library for building user interfaces. In this comprehensive guide, we'll explore the fundamental concepts of React and walk through building your first component. We'll cover topics like JSX, props, state, and component lifecycle methods.",
-      category: "Development",
-      date: "2025-01-15",
-      isFeatured: true,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 2,
-      title: "Mastering CSS Grid",
-      excerpt: "A comprehensive guide to CSS Grid layout system",
-      content: "CSS Grid is a revolutionary layout system that has transformed how we design web layouts. This in-depth guide covers everything from basic grid concepts to advanced layout techniques. Learn how to create responsive, complex layouts with minimal code.",
-      category: "Design",
-      date: "2025-01-10",
-      isFeatured: true,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 3,
-      title: "JavaScript Best Practices",
-      excerpt: "Write cleaner and more efficient JavaScript code",
-      content: "Discover the best practices for writing maintainable and efficient JavaScript code. We'll discuss code organization, performance optimization, error handling, and modern JavaScript features that will help you become a better developer.",
-      category: "Development",
-      date: "2025-01-05",
-      isFeatured: false,
-      image: "/api/placeholder/400/250"
-    }
-  ];
-  const categories = ["All", "Development", "Design", "Career", "Tips"];
-
-  // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter(post => {
+    // Filter posts based on search and category
+    const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const featuredPosts = filteredPosts.filter(post => post.isFeatured);
-  const regularPosts = filteredPosts.filter(post => !post.isFeatured);
+      const posts = await Promise.all(
+        postDates.map(async ({ date, title }) => {
+          const response = await fetch(`/blogPosts/${date}.md`);
+          if (!response.ok) return null;
+          const content = await response.text();
+          return { id: date, title, content, likes: 0 }; // Add a like count for each post
+        })
+      );
+      setBlogPosts(posts.filter(Boolean));
+    };
 
-  // Loading overlay component
-  const LoadingOverlay = () => (
-    <div className="fixed inset-0 bg-white/80 flex items-center justify-center z-50">
-      <div className="animate-spin">
-        <Loader size={40} className="text-blue-500" />
-      </div>
-    </div>
-  );
+    fetchMarkdownFiles();
+  }, []);
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    // Handle comment submission (you can store it, or post to a backend)
+    alert(`Your comment: ${comments}`);
+    setComments(""); // Clear comment input after submission
+  };
+
+  const postVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    tap: { scale: 0.9 },
+  };
+
+  const handleLike = (postId) => {
+    setBlogPosts(prevPosts =>
+      prevPosts.map(post =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
+    );
+  };
 
   if (selectedPost) {
     return (
-      <div className={`max-w-4xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-        {isLoading && <LoadingOverlay />}
-        
-        <button 
-          onClick={handleBackToList}
-          className="flex items-center text-blue-500 hover:text-blue-600 mb-8 transition-transform duration-300 hover:-translate-x-1"
+      <motion.div className="max-w-4xl mx-auto px-4 py-8 font-montserrat" initial="hidden" animate="visible" variants={postVariants}>
+        <button
+          onClick={() => setSelectedPost(null)}
+          className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:-translate-x-1"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <ArrowLeft className="mr-2" size={20} />
-          Back to Posts
+          ← Back to Posts
         </button>
-        
-        <article className="animate-fadeIn">
-          <img 
-            src={selectedPost.image} 
-            alt={selectedPost.title}
-            className="w-full h-64 object-cover rounded-lg mb-8 transition-transform duration-500 hover:scale-[1.02]"
-          />
-          <div className="space-y-4">
-            <span className="text-sm text-blue-500 inline-block transition-colors duration-300">{selectedPost.category}</span>
-            <h1 className="text-4xl font-bold">{selectedPost.title}</h1>
-            <p className="text-gray-500">
-              {new Date(selectedPost.date).toLocaleDateString()}
-            </p>
-            <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed">
-                {selectedPost.content}
-              </p>
-            </div>
-          </div>
+        <article className="prose lg:prose-xl">
+          <h1 className="text-5xl font-bold mt-10">{selectedPost.title}</h1> {/* Main heading styling */}
+          <p className="text-sm text-gray-500 mt-4 font-semibold">
+            Posted on: {new Date(selectedPost.id).toLocaleDateString()}
+          </p>
+          {/* Add grey line below Posted on */}
+          <div className="border-b border-gray-300 mt-2"></div>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({ children }) => <h1 className="text-4xl font-bold mt-10">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-3xl font-semibold mt-8">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-2xl font-medium mt-6">{children}</h3>,
+              p: ({ children }) => <p className="text-lg leading-relaxed">{children}</p>,
+              ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+              ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
+              table: ({ children }) => (
+                <table className="border-collapse border border-gray-300 w-full">{children}</table>
+              ),
+              th: ({ children }) => (
+                <th className="border border-gray-300 bg-gray-200 px-3 py-2">{children}</th>
+              ),
+              td: ({ children }) => <td className="border border-gray-300 px-3 py-2">{children}</td>,
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-gray-500 pl-4 italic text-gray-600">
+                  {children}
+                </blockquote>
+              ),
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                return !inline && match ? (
+                  <SyntaxHighlighter style={dracula} language={match[1]} PreTag="div">
+                    {String(children).replace(/\n$/, "")}
+                  </SyntaxHighlighter>
+                ) : (
+                  <code className="bg-gray-100 px-1 py-0.5 rounded text-red-500" {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {selectedPost.content}
+          </ReactMarkdown>
         </article>
-      </div>
+
+        {/* Line under the content */}
+        <div className="border-b border-gray-300 mt-8"></div>
+
+        {/* Like and Share buttons */}
+        <div className="flex items-center justify-between mt-4">
+          <motion.button
+            className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={() => handleLike(selectedPost.id)}
+          >
+            <ThumbsUp size={20} className="mr-2" /> {selectedPost.likes} Likes
+          </motion.button>
+          <motion.button
+            className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <Share2 size={20} className="mr-2" /> Share
+          </motion.button>
+        </div>
+
+        {/* Comment Section */}
+        <div className="mt-8">
+          <h3 className="text-2xl font-bold mb-4">Add a Comment</h3>
+          <form onSubmit={handleCommentSubmit} className="space-y-4">
+            <textarea
+              className="w-full p-4 border border-gray-300 rounded-lg"
+              rows="4"
+              placeholder="Write your comment here..."
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+            />
+            <motion.button
+              type="submit"
+              className="px-6 py-2 bg-blue-500 text-white rounded-full font-bold hover:bg-blue-600 transition-colors"
+              variants={buttonVariants}
+              whileHover={{scale: 1.02}}
+              whileTap="tap"
+            >
+              Submit Comment
+            </motion.button>
+          </form>
+        </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className={`max-w-6xl mx-auto px-4 py-8 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-      {isLoading && <LoadingOverlay />}
-      
-      <h1 className="text-4xl font-bold mb-8 animate-fadeIn">Blog</h1>
-      
-      <div className="mb-8 space-y-4">
-        <div className="relative transition-transform duration-300 hover:scale-[1.01]">
-          <input
-            type="text"
-            placeholder="Search posts..."
-            className="w-full p-3 pl-10 border rounded-lg transition-shadow duration-300 hover:shadow-md"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-        </div>
-        
-        <div className="flex gap-2 flex-wrap">
-          {categories.map(category => (
-            <button
-              key={category}
-              className={`px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
-                selectedCategory === category
-                  ? 'bg-blue-500 text-white shadow-md'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-              onClick={() => handleCategoryChange(category)}
+    <div className="mb-12 animate-fadeIn">
+  <h2 className="text-5xl font-bold mb-8">Blog</h2>
+  <div className="grid md:grid-cols-3 gap-8">
+    {blogPosts.map(post => (
+      <div 
+        key={post.id} 
+        className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
+      >
+        <div className="p-6">
+          <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+          <p className="text-gray-500 text-sm mb-2 font-semibold">Posted on: {new Date(post.id).toLocaleDateString()}</p>
+          <div className="border-b border-gray-300 mb-4"></div>
+          <div className="flex justify-between items-center">
+            <button 
+              className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+              onClick={() => setSelectedPost(post)}
             >
-              {category}
+              Read More →
             </button>
-          ))}
-        </div>
-      </div>
-
-      {featuredPosts.length > 0 && (
-        <div className="mb-12 animate-fadeIn">
-          <h2 className="text-2xl font-bold mb-6">Featured Posts</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {featuredPosts.map(post => (
-              <div 
-                key={post.id} 
-                className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
-              >
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
-                />
-                <div className="p-6">
-                  <span className="text-sm text-blue-500">{post.category}</span>
-                  <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
-                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
-                      {new Date(post.date).toLocaleDateString()}
-                    </span>
-                    <button 
-                      className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
-                      onClick={() => handleReadMore(post)}
-                    >
-                      Read More →
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+            <button 
+              className="flex items-center text-blue-500 font-semibold hover:text-blue-600 
+                          hover:scale-105 transition-all duration-300"
+              onClick={() => handleLike(post.id)}
+            >
+              <ThumbsUp size={20} className="mr-2 " /> {post.likes} Likes
+            </button>
           </div>
         </div>
-      )}
-
-      <div className="grid md:grid-cols-3 gap-8">
-        {regularPosts.map(post => (
-          <div 
-            key={post.id} 
-            className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
-          >
-            <img 
-              src={post.image} 
-              alt={post.title}
-              className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
-            />
-            <div className="p-6">
-              <span className="text-sm text-blue-500">{post.category}</span>
-              <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">
-                  {new Date(post.date).toLocaleDateString()}
-                </span>
-                <button 
-                  className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
-                  onClick={() => handleReadMore(post)}
-                >
-                  Read More →
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
-    </div>
+    ))}
+  </div>
+</div>
   );
 };
-
 
 export default PortfolioWebsite;
