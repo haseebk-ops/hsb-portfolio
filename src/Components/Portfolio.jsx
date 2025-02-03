@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
-  X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, 
+  X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, Menu,
   Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
-
-
-
+  
+  
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sidebarVisible, setSidebarVisible] = useState(true); // State to control sidebar visibility
 
   useEffect(() => {
     const loadingTimer = setTimeout(() => setIsLoading(false), 2000);
@@ -31,7 +30,6 @@ const PortfolioWebsite = () => {
     { key: 'contact', icon: Send, label: 'Contact' }
   ];
 
-
   const renderSection = () => {
     const sectionComponents = {
       home: <HomeSection />,
@@ -46,9 +44,11 @@ const PortfolioWebsite = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100 flex transition-all ease-in-out duration-300">
       {/* Sidebar Navigation */}
-      <nav className="fixed top-0 left-0 w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8 h-full z-10">
+      <nav
+        className={`fixed top-0 left-0 w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8 h-full z-10 transition-all duration-300 ${sidebarVisible ? 'block' : 'hidden'} md:flex md:justify-center md:items-center`}
+      >
         {sections.map(({ key, icon: Icon, label }) => (
           <motion.button
             key={key}
@@ -56,8 +56,8 @@ const PortfolioWebsite = () => {
             onMouseEnter={() => setHoveredSection(label)}
             onMouseLeave={() => setHoveredSection(null)}
             className={`relative p-3 mb-4 rounded-lg group ${
-              activeSection === key 
-                ? 'bg-blue-500 text-white' 
+              activeSection === key
+                ? 'bg-blue-500 text-white'
                 : 'text-gray-500 hover:bg-gray-200'
             }`}
             whileHover={{ scale: 1.1 }}
@@ -65,7 +65,7 @@ const PortfolioWebsite = () => {
           >
             <Icon />
             {hoveredSection === label && (
-              <motion.span 
+              <motion.span
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="absolute left-full ml-2 bg-black text-white text-xs px-2 py-1 rounded"
@@ -77,8 +77,24 @@ const PortfolioWebsite = () => {
         ))}
       </nav>
 
+      {/* Toggle Button for Sidebar on Small Devices */}
+      <button
+        onClick={() => setSidebarVisible(!sidebarVisible)}
+        className="fixed top-4 left-4 md:hidden p-3 bg-blue-500 text-white rounded-full z-20"
+      >
+        {sidebarVisible ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Menu className="h-6 w-6" />
+        )}
+      </button>
+
       {/* Main Content Area */}
-      <main className="flex-1 ml-20 p-8 overflow-y-auto">
+      <main
+        className={`flex-1 transition-all ease-in-out duration-300 ${
+          sidebarVisible ? 'ml-20' : 'ml-0'
+        } p-8 overflow-y-auto`}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSection}
@@ -94,6 +110,8 @@ const PortfolioWebsite = () => {
     </div>
   );
 };
+  
+    
 
 // Home Section
 
