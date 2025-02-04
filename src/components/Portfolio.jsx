@@ -5,8 +5,8 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
-  X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, Menu,
-  Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
+  X, Home, Github, User, Briefcase, FileText, Code, FileUser, Menu, ChevronLeft, ChevronRight,
+  Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
 
 // Navigation Bar
 const PortfolioWebsite = () => {
@@ -375,7 +375,8 @@ const AboutSection = () => (
         <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
         <div className="flex flex-wrap gap-2 ">
           {['Python', 'SQL', 'Data Analysis', 'Data Visualization', 'Ai Tools'].map(skill => (
-            <span key={skill} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:shadow-lg transition-all duration-300">
+            <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
+                                          transform transition-all duration-300 hover:scale-110">
               {skill}
             </span>
           ))}
@@ -385,7 +386,8 @@ const AboutSection = () => (
         <h3 className="text-xl font-semibold mb-4">Software Skills</h3>
         <div className="flex flex-wrap gap-2">
           {['Adobe Photoshop', 'Adobe Illustrator', 'Excel', 'Access', 'Microsoft Office', 'Power BI', 'Adobe InDesign'].map(skill => (
-            <span key={skill} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:shadow-lg transition-all duration-300">
+            <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
+                                          transform transition-all duration-300 hover:scale-110">
               {skill}
             </span>
           ))}
@@ -536,11 +538,168 @@ const PDFModal = ({ isOpen, onClose, pdfUrl }) => {
   );
 };
 
+// Project Modal
+const ProjectModal = ({ isOpen, onClose, project }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [modalAnimation, setModalAnimation] = useState('opacity-0 scale-95');
+
+  useEffect(() => {
+    if (isOpen) {
+      setModalAnimation('opacity-100 scale-100');
+    } else {
+      setModalAnimation('opacity-0 scale-95');
+    }
+  }, [isOpen]);
+
+  if (!isOpen || !project) return null;
+
+  const showNavigation = project.images && project.images.length > 1;
+
+  const nextImage = () => {
+    if (project.images && project.images.length > 1) {
+      setCurrentImageIndex((prev) => 
+        prev === project.images.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const previousImage = () => {
+    if (project.images && project.images.length > 1) {
+      setCurrentImageIndex((prev) => 
+        prev === 0 ? project.images.length - 1 : prev - 1
+      );
+    }
+  };
+
+  const currentImage = project.images && project.images[currentImageIndex];
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div 
+        className={`
+          bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 relative
+          transform transition-all duration-300 ease-out
+          ${modalAnimation}
+        `}
+      >
+        <div className="p-4 border-b flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">{project.title}</h2>
+          <button
+            onClick={onClose}
+            className="rounded-full p-2 hover:bg-gray-100 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
+        
+        <div className="p-6">
+          {currentImage && (
+            <div className="relative rounded-lg overflow-hidden border-2 border-blue-600">
+              <motion.img
+                key={currentImageIndex}
+                src={currentImage}
+                alt={`${project.title} - Image ${currentImageIndex + 1}`}
+                className="w-full h-64 object-cover"
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.3 }}
+              />
+
+              {showNavigation && (
+                <>
+                  <button
+                    onClick={previousImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
+                             text-white transition-all duration-300 hover:bg-black/70 
+                             transform hover:scale-110 active:scale-95"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
+                             text-white transition-all duration-300 hover:bg-black/70 
+                             transform hover:scale-110 active:scale-95"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+
+                  <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 
+                                rounded text-sm backdrop-blur-sm">
+                    {currentImageIndex + 1} / {project.images.length}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+          <div>
+            <div className="space-x-4 mt-5 flex">
+              <a
+                href={project.projectUrl}
+                className="bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
+                            hover:bg-transparent hover:text-blue-600"
+              >
+                View Project
+              </a>
+              <a
+                href={project.githubUrl}
+                className="bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
+                            hover:bg-transparent hover:text-blue-600"
+              >
+                GitHub Repo
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            {project.date && (
+              <div>
+                <h4 className="font-semibold text-lg">Date</h4>
+                <p>{project.date}</p>
+              </div>
+            )}
+
+            {project.fullDescription && (
+              <div>
+                <h4 className="font-semibold text-lg">Description</h4>
+                <p>{project.fullDescription}</p>
+              </div>
+            )}
+
+            {project.skills && project.skills.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-lg">Skills & Technologies</h4>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {project.skills.map((skill, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
+                               transform transition-all duration-300 hover:scale-110"
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 // Project Section -- Main
 const ProjectsSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const openModal = (url) => {
     setPdfUrl(url);
@@ -550,6 +709,18 @@ const ProjectsSection = () => {
   const closeModal = () => {
     setModalOpen(false);
     setPdfUrl('');
+  };
+
+  const openProjectModal = (project) => {
+    setSelectedProject(project);
+    setModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeProjectModal = () => {
+    setModalOpen(false);
+    setSelectedProject(null);
+    document.body.style.overflow = 'unset';
   };
 
   const certificates = [
@@ -590,36 +761,33 @@ const ProjectsSection = () => {
     }
   ];
 
-  // const projects = [
-  //   {
-  //     title: "Project 1",
-  //     description: "Brief project description, technologies used",
-  //     projectUrl: "#",
-  //     githubUrl: "#"
-  //   },
-  //   {
-  //     title: "Project 2",
-  //     description: "Brief project description, technologies used",
-  //     projectUrl: "#",
-  //     githubUrl: "#"
-  //   },
-  //   {
-  //     title: "Project 3",
-  //     description: "Brief project description, technologies used",
-  //     projectUrl: "#",
-  //     githubUrl: "#"
-  //   }
-  // ];
+  const projects = [
+    {
+      title: "Project 1",
+      shortDescription: "Brief project description, technologies used",
+      fullDescription: "Detailed explanation of the project, its goals, and implementation details.asfgnsdfkjgnsdrthodfiugvbzfn,clgdhizug dl;fgbzdflkgjdrzighfnxcvbnzitughfnbjkn cvsdigherouig righdfkgj dirutghdf, ertghdfkghaeurfgsdgjkd rtguihdfgbjZHrio asghfdkbv rdyhfugijvnfvbxhniughdfbkjcvnbuyzdgdf difghzudghfkbjnuzyhgf gdziuoghdfjkgbvnvc",
+      projectUrl: "#",
+      githubUrl: "#",
+      date: "January 2024",
+      skills: ["React", "Node.js", "MongoDB"],
+      images: [
+        "/images/IMG_0327.jpeg",
+        "/images/HTML.png",
+        "/images/CA2.jpeg"
+      ]
+    },
+    // ... other projects
+  ];
 
 
   return (
     <div>
-      {/* <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2> */}
-      <h2 className="text-3xl font-bold mb-6">Courses</h2>
+      <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2>
+      {/* <h2 className="text-3xl font-bold mb-6">Courses</h2> */}
 
       {/* Courses Section */}
       <div className="mb-8">  
-        {/* <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3> */}
+        <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3>
 
         <div className="grid md:grid-cols-2 gap-6">
           {certificates.map((cert, index) => (
@@ -630,7 +798,7 @@ const ProjectsSection = () => {
               <p className="text-gray-600">Credential ID: {cert.credentialId}</p>
               {cert.credentialUrl && (
                 <p className="text-gray-600">
-                  Credential URL: <a href={cert.credentialUrl} className="text-blue-600 hover:underline">View</a>
+                  Credential URL: <a href={cert.credentialUrl} target="_blank" className="text-blue-600 hover:underline">View</a>
                 </p>
               )}
               <p className="text-gray-600">Skills Gained: {cert.skills}</p>
@@ -656,31 +824,47 @@ const ProjectsSection = () => {
       />
 
       {/* Projects Section */}
-      {/* <div>
+      <div>
         <h3 className="text-2xl font-semibold mb-4">Projects</h3>
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-xl"
+            >
               <h4 className="text-xl font-semibold">{project.title}</h4>
-              <p>{project.description}</p>
-              <div className="mt-4">
-                <a
-                  href={project.projectUrl}
-                  className="text-blue-600 hover:underline mr-4"
-                >
-                  View Project
-                </a>
-                <a
-                  href={project.githubUrl}
-                  className="text-blue-600 hover:underline"
-                >
-                  GitHub Repo
-                </a>
+              <p>{project.shortDescription}</p>
+              <div className="mt-5 flex items-center justify-between">
+                <div className="space-x-4">
+                  <a
+                    onClick={() => openProjectModal(project)}
+                    className="bg-transparent text-blue-600 px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
+                                hover:bg-blue-600 hover:text-white"
+                  >
+                    View Project
+                  </a>
+                  <a
+                    href={project.githubUrl}
+                    className="bg-transparent text-blue-600 px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
+                                hover:bg-blue-600 hover:text-white"
+                  >
+                    GitHub Repo
+                  </a>
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div> */}
+
+        <ProjectModal
+          isOpen={isModalOpen}
+          onClose={closeProjectModal}
+          project={selectedProject}
+        />
+      </div>
     </div>
   );
 };
