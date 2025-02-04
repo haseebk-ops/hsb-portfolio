@@ -8,7 +8,8 @@ import {
   X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, Menu,
   Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
   
-  
+
+// Navigation Bar
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
@@ -111,10 +112,8 @@ const PortfolioWebsite = () => {
   );
 };
   
-    
 
 // Home Section
-
 const HomeSection = () => (
   <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12 p-6">
     {/* Profile Photo */}
@@ -196,8 +195,8 @@ const HomeSection = () => (
   </div>
 );
 
-// Contact Section
 
+// Contact Section
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -349,8 +348,8 @@ const ContactSection = () => {
   );
 };
 
-// About Section
 
+// About Section
 const AboutSection = () => (
   <div>
     <h2 className="text-3xl font-bold mb-6">About Me</h2>
@@ -397,8 +396,8 @@ const AboutSection = () => (
   </div>
 );
 
-// Education Section
 
+// Education Section
 const EducationSection = () => (
     <div>
       <h2 className="text-3xl font-bold mb-6">Education</h2>
@@ -438,8 +437,8 @@ const EducationSection = () => (
     </div>
 );
 
-// Experience Section
 
+// Experience Section
 const ExperienceSection = () => (
   <div>
     <h2 className="text-3xl font-bold mb-6">Professional Experience</h2>
@@ -687,8 +686,8 @@ const ProjectsSection = () => {
   );
 };
 
-// Blog
 
+// Blog
 const BlogPage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -900,5 +899,6 @@ const BlogPage = () => {
 </div>
   );
 };
+
 
 export default PortfolioWebsite;
