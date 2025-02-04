@@ -710,10 +710,11 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
         className={`
           bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 relative
           transform transition-all duration-300 ease-out
+          max-h-[90vh] flex flex-col
           ${modalAnimation}
         `}
       >
-        <div className="p-4 border-b flex items-center justify-between">
+        <div className="p-4 border-b flex items-center justify-between shrink-0">
           <h2 className="text-lg font-semibold text-gray-900">{project.title}</h2>
           <button
             onClick={onClose}
@@ -724,7 +725,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
           </button>
         </div>
         
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-blue-100">
           {currentImage && (
             <div className="relative rounded-lg overflow-hidden border-2 border-blue-600">
               <motion.img
@@ -765,6 +766,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
               )}
             </div>
           )}
+          
           <div>
             <div className="space-x-4 mt-5 flex">
               <a
