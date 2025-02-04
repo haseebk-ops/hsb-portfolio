@@ -6,14 +6,86 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   X, Home, Github, User, Briefcase, FileText, Code, FileUser, Menu, ChevronLeft, ChevronRight,
-  Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
+  Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2, Eye, EyeOff  } from 'lucide-react';
 
-// Navigation Bar
+
+//Navigation bar
+const SidebarButton = ({ icon: Icon, label, isActive, isLabelsVisible, hoveredSection, onHover, onClick }) => {
+  return (
+    <motion.button
+      onClick={onClick}
+      onMouseEnter={() => onHover(label)}
+      onMouseLeave={() => onHover(null)}
+      className={`
+        relative p-3 mb-2 rounded-xl
+        transition-all duration-200 ease-in-out
+        ${isLabelsVisible ? 'w-40 mx-4' : 'w-14 mx-3'}
+        ${isActive 
+          ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' 
+          : 'text-gray-600 hover:bg-blue-100 hover:text-blue-600'
+        }
+      `}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ duration: 0.1 }}
+    >
+      <motion.div
+        className="flex items-center"
+        animate={{
+          justifyContent: isLabelsVisible ? 'flex-start' : 'center',
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        <Icon className="w-6 h-6 min-w-6" />
+        <AnimatePresence mode="wait">
+          {isLabelsVisible && (
+            <motion.span 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+              className="ml-3 text-sm font-medium"
+            >
+              {label}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      {!isLabelsVisible && hoveredSection === label && (
+        <motion.div
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="absolute left-full ml-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap z-50"
+        >
+          {label}
+        </motion.div>
+      )}
+    </motion.button>
+  );
+};
+  
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [sidebarVisible, setSidebarVisible] = useState(true); // State to control sidebar visibility
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [labelsVisible, setLabelsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle screen resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth < 768) {
+        setSidebarVisible(false);
+        setLabelsVisible(true);
+      }
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const loadingTimer = setTimeout(() => setIsLoading(false), 2000);
@@ -43,152 +115,221 @@ const PortfolioWebsite = () => {
     return sectionComponents[activeSection];
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 flex transition-all ease-in-out duration-300">
-      {/* Sidebar Navigation */}
-      <nav
-        className={`fixed top-0 left-0 w-20 bg-white shadow-lg flex flex-col items-center justify-center py-8 h-full z-10 transition-all duration-300 ${sidebarVisible ? 'block' : 'hidden'} md:flex md:justify-center md:items-center`}
-      >
-        {sections.map(({ key, icon: Icon, label }) => (
-          <motion.button
-            key={key}
-            onClick={() => setActiveSection(key)}
-            onMouseEnter={() => setHoveredSection(label)}
-            onMouseLeave={() => setHoveredSection(null)}
-            className={`relative p-3 mb-4 rounded-lg group ${
-              activeSection === key
-                ? 'bg-blue-500 text-white'
-                : 'text-gray-500 hover:bg-gray-200'
-            }`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Icon />
-            {hoveredSection === label && (
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="absolute left-full ml-2 bg-black text-white text-xs px-2 py-1 rounded"
-              >
-                {label}
-              </motion.span>
-            )}
-          </motion.button>
-        ))}
-      </nav>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
 
-      {/* Toggle Button for Sidebar on Small Devices */}
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex">
+      {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarVisible(!sidebarVisible)}
-        className="fixed top-4 left-4 md:hidden p-3 bg-blue-500 text-white rounded-full z-20"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white/90 shadow-lg"
       >
-        {sidebarVisible ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
+        {sidebarVisible ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      {/* Main Content Area */}
-      <main
-        className={`flex-1 transition-all ease-in-out duration-300 ${
-          sidebarVisible ? 'ml-20' : 'ml-0'
-        } p-8 overflow-y-auto`}
+      {/* Navigation Sidebar */}
+      <motion.nav
+        initial={isMobile ? { x: '-100%' } : false}
+        animate={{ 
+          x: sidebarVisible ? 0 : '-100%',
+          width: !isMobile && labelsVisible ? '12rem' : '5rem'
+        }}
+        transition={{ duration: 0.2 }}
+        className={`
+          fixed top-0 left-0 
+          bg-white/90 backdrop-blur-md 
+          shadow-lg flex flex-col
+          h-full z-40
+          border-r border-gray-200
+          ${isMobile ? 'w-full pt-16' : ''}
+        `}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSection}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderSection()}
-          </motion.div>
-        </AnimatePresence>
+
+      {/* Overlay for mobile */}
+      {isMobile && sidebarVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSidebarVisible(false)}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden"
+        />
+      )}
+        <div className="flex flex-col justify-center flex-1">
+          {sections.map(({ key, icon, label }) => (
+            <SidebarButton
+              key={key}
+              icon={icon}
+              label={label}
+              isActive={activeSection === key}
+              isLabelsVisible={isMobile ? true : labelsVisible}
+              hoveredSection={hoveredSection}
+              onHover={setHoveredSection}
+              onClick={() => {
+                setActiveSection(key);
+                if (isMobile) setSidebarVisible(false);
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Show/Hide Labels button - Only visible on desktop */}
+        {!isMobile && (
+          <div className="px-3 py-8">
+            <motion.button
+              onClick={() => setLabelsVisible(!labelsVisible)}
+              onMouseEnter={() => setHoveredSection(labelsVisible ? 'Hide labels' : 'Show labels')}
+              onMouseLeave={() => setHoveredSection(null)}
+              className="relative p-3 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {labelsVisible ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              {hoveredSection && (hoveredSection === 'Hide labels' || hoveredSection === 'Show labels') && (
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="absolute left-full ml-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap z-50"
+                >
+                  {hoveredSection}
+                </motion.div>
+              )}
+            </motion.button>
+          </div>
+        )}
+      </motion.nav>
+
+      {/* Main Content */}
+      <main
+        className={`
+          flex-1 transition-all duration-200
+          ${sidebarVisible ? (isMobile ? 'ml-0' : (labelsVisible ? 'ml-48' : 'ml-20')) : 'ml-0'}
+          p-8 overflow-y-auto
+        `}
+      >
+        <motion.div
+          key={activeSection}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          className="max-w-6xl mx-auto"
+        >
+          {renderSection()}
+        </motion.div>
       </main>
+
+      {/* Overlay for mobile when sidebar is open */}
+      {isMobile && sidebarVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSidebarVisible(false)}
+          className="fixed inset-0 bg-black/20 z-30 md:hidden"
+        />
+      )}
     </div>
   );
 };
-  
+      
 
 // Home Section
 const HomeSection = () => (
-  <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12 p-6">
-    {/* Profile Photo */}
-    <motion.div 
-      className="w-58 h-74 rounded-lg overflow-hidden shadow-lg border-4 border-blue-500"
-      whileHover={{ scale: 1.05 }}
-    >
-      <img 
-        src="/images/IMG_0327.jpeg"
-        alt="Professional Profile" 
-        className="w-full h-full object-cover"
-      />
-</motion.div>
+  <div className=" flex items-center justify-center p-4">
+    <div className='w-full flex flex-col justify-center items-center md:flex-row max-w-250 bg-white rounded-xl p-8 
+                    shadow-md hover:shadow-lg md:space-x-12 p-6 md:space-y-0 space-y-6 transition-all duration-300 mt-15'>
+      {/* Profile Photo */}
+      <motion.div 
+        className="w-58 h-74 rounded-lg overflow-hidden shadow-lg border-4 border-blue-500"
+        whileHover={{ scale: 1.05 }}
+      >
+        <img 
+          src="/images/IMG_0327.jpeg"
+          alt="Professional Profile" 
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
 
 
-    {/* Personal Details */}
-    <div className="text-left max-w-lg">
-      <h1 className="text-4xl font-bold mb-2 text-gray-800">Haseeb K</h1>
-      <h2 className="text-2xl text-blue-600 mb-4">Data Analyst</h2>
+      {/* Personal Details */}
+      <div className="text-left max-w-lg">
+        <h1 className="text-4xl font-bold mb-2 text-gray-800">Haseeb K</h1>
+        <h2 className="text-2xl text-blue-600 mb-4">Data Analyst</h2>
 
-      {/* Contact Information */}
-      <div className="space-y-5 mb-6">
-        <div className="flex items-center">
-          <Phone size={20} className="mr-3 text-gray-600" />
-          <span>+91 97455 81670</span>
+        {/* Contact Information */}
+        <div className="space-y-5 mb-6">
+          <div className="flex items-center">
+            <Phone size={20} className="mr-3 text-gray-600" />
+            <span>+91 97455 81670</span>
+          </div>
+          <div className="flex items-center">
+            <Mail size={20} className="mr-3 text-gray-600" />
+            <span>create.haseeb@gmail.com</span>
+          </div>
+          <div className="flex items-center">
+            <MapPin size={20} className="mr-3 text-gray-600" />
+            <span>Edavanna, Kerala, India</span>
+          </div>
         </div>
-        <div className="flex items-center">
-          <Mail size={20} className="mr-3 text-gray-600" />
-          <span>create.haseeb@gmail.com</span>
-        </div>
-        <div className="flex items-center">
-          <MapPin size={20} className="mr-3 text-gray-600" />
-          <span>Edavanna, Kerala, India</span>
-        </div>
-      </div>
 
-      {/* Social Links */}
-      {/* Linked IN */}
-      <div className="flex space-x-5 mb-6">
-        <motion.a 
-          href="#" 
-          className="hover:text-blue-500"
-          whileHover={{ scale: 1.2 }}
-        >
-          <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
-            <Linkedin size={24} />
-          </a>
-        </motion.a>
-        {/* GitHub */}
-        <motion.a 
-          href="#" 
-          className="hover:text-blue-500"
-          whileHover={{ scale: 1.2 }}
-        >
-          <a href="https://github.com/haseeb-ops" className="hover:text-blue-500">
-            <Github size={24} />
-          </a>
-        </motion.a>
-        {/* CV */}
-        <motion.a 
-          href="#" 
-          className="hover:text-blue-500"
-          whileHover={{ scale: 1.2 }}
-        >
-          <a href="/pdf/Haseeb New CV.pdf" className="hover:text-blue-500">
-            <FileUser size={24} />
-          </a>
-        </motion.a>
-      </div>
+        {/* Social Links */}
+        {/* Linked IN */}
+        <div className="flex space-x-5 mb-6">
+          <motion.a 
+            href="#" 
+            className="hover:text-blue-500"
+            whileHover={{ scale: 1.2 }}
+          >
+            <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
+              <Linkedin size={24} />
+            </a>
+          </motion.a>
+          {/* GitHub */}
+          <motion.a 
+            href="#" 
+            className="hover:text-blue-500"
+            whileHover={{ scale: 1.2 }}
+          >
+            <a href="https://github.com/haseeb-ops" className="hover:text-blue-500">
+              <Github size={24} />
+            </a>
+          </motion.a>
+          {/* CV */}
+          <motion.a 
+            href="#" 
+            className="hover:text-blue-500"
+            whileHover={{ scale: 1.2 }}
+          >
+            <a href="/pdf/Haseeb New CV.pdf" className="hover:text-blue-500">
+              <FileUser size={24} />
+            </a>
+          </motion.a>
+        </div>
 
-      {/* Professional Summary */}
-      <div className="bg-blue-100 p-4 rounded-lg">
-        <h3 className="text-xl font-semibold mb-2">Professional Summary</h3>
-        <p className="text-gray-700">
-        Passionate about data science, exploring data analytics, programming, and problem-solving. Driven by curiosity to leverage data for informed decision-making and continuous learning.
-        </p>
+        {/* Professional Summary */}
+        <div className="bg-blue-100 p-4 rounded-lg">
+          <h3 className="text-xl font-semibold mb-2">Professional Summary</h3>
+          <p className="text-gray-700">
+          Passionate about data science, exploring data analytics, programming, and problem-solving. Driven by curiosity to leverage data for informed decision-making and continuous learning.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -239,7 +380,7 @@ const ContactSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-150 bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Contact Me</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -1044,7 +1185,7 @@ const BlogPage = () => {
 
   return (
     <div className="mb-12 animate-fadeIn">
-    <h2 className="text-5xl font-bold mb-8">Blog</h2>
+    <h2 className="text-3xl font-bold mb-6">Blog</h2>
     <div className="grid md:grid-cols-3 gap-8">
     {blogPosts.map(post => (
       <div 
