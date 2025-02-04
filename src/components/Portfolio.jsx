@@ -9,7 +9,7 @@ import {
   Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2, Eye, EyeOff  } from 'lucide-react';
 
 
-//Navigation bar
+// Sidebar Button Component
 const SidebarButton = ({ icon: Icon, label, isActive, isLabelsVisible, hoveredSection, onHover, onClick }) => {
   return (
     <motion.button
@@ -146,14 +146,15 @@ const PortfolioWebsite = () => {
 
       {/* Navigation Sidebar */}
       <motion.nav
-        initial={isMobile ? { x: '-100%' } : false}
+        initial={isMobile ? { x: -320 } : false}
         animate={{ 
-          x: sidebarVisible ? 0 : '-100%',
+          x: sidebarVisible ? 0 : isMobile ? '-250%' : '-320px',
           width: !isMobile && labelsVisible ? '12rem' : '5rem'
         }}
         transition={{ duration: 0.2 }}
         className={`
           fixed top-0 left-0 
+          w-64 md:w-20
           bg-white/90 backdrop-blur-md 
           shadow-lg flex flex-col
           h-full z-40
@@ -161,17 +162,6 @@ const PortfolioWebsite = () => {
           ${isMobile ? 'w-full pt-16' : ''}
         `}
       >
-
-      {/* Overlay for mobile */}
-      {isMobile && sidebarVisible && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setSidebarVisible(false)}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden"
-        />
-      )}
         <div className="flex flex-col justify-center flex-1">
           {sections.map(({ key, icon, label }) => (
             <SidebarButton
@@ -220,7 +210,7 @@ const PortfolioWebsite = () => {
       <main
         className={`
           flex-1 transition-all duration-200
-          ${sidebarVisible ? (isMobile ? 'ml-0' : (labelsVisible ? 'ml-48' : 'ml-20')) : 'ml-0'}
+          ${sidebarVisible ? (isMobile ? 'ml-0' : (labelsVisible ? 'md:ml-48' : 'md:ml-20')) : 'ml-0'}
           p-8 overflow-y-auto
         `}
       >
