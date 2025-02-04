@@ -867,6 +867,14 @@ const ProjectsSection = () => {
       pdfUrl: "/pdf/DA2.pdf"
     },
     {
+      title: "Intro to SQL",
+      issuedBy: "Kaggle",
+      issueDate: "February 2025",
+      credentialUrl: "https://www.kaggle.com/learn/certification/haseeb666/intro-to-sql",
+      skills: "SQL",
+      pdfUrl: "/pdf/SQL-Kaggle.pdf"
+    },
+    {
       title: "Introduction to Data Analytics",
       issuedBy: "Meta",
       issueDate: "January 2025",
