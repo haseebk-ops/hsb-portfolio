@@ -7,7 +7,6 @@ import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   X, Home, Github, User, Search, ArrowLeft, Briefcase, FileText, Code, FileUser, Menu,
   Send, Notebook, Phone, Mail, Loader, Linkedin, MapPin, Instagram, ThumbsUp, Share2} from 'lucide-react';
-  
 
 // Navigation Bar
 const PortfolioWebsite = () => {
