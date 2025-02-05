@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+// import { Link } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   X, Home, Github, User, Briefcase, FileText, Code, FileUser, Menu, ChevronLeft, ChevronRight,
   Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2, Eye, EyeOff  } from 'lucide-react';
+import { div } from 'framer-motion/client';
 
 
 // Sidebar Button Component
@@ -833,6 +835,7 @@ const ProjectsSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [showAll, setShowAll] = useState(false);
 
   const openModal = (url) => {
     setPdfUrl(url);
@@ -856,6 +859,7 @@ const ProjectsSection = () => {
     document.body.style.overflow = 'unset';
   };
 
+
   const certificates = [
     {
       title: "Data Analysis with Spreadsheets and SQL",
@@ -864,7 +868,9 @@ const ProjectsSection = () => {
       credentialId: "ZF5LOYO73PRJ",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/ZF5LOYO73PRJ",
       skills: "Data Analysis, Machine Learning",
-      pdfUrl: "/pdf/DA2.pdf"
+      pdfUrl: "/pdf/DA2.pdf",
+      category: "Data Analytics",
+      isPinned: true
     },
     {
       title: "Intro to SQL",
@@ -872,7 +878,28 @@ const ProjectsSection = () => {
       issueDate: "February 2025",
       credentialUrl: "https://www.kaggle.com/learn/certification/haseeb666/intro-to-sql",
       skills: "SQL",
-      pdfUrl: "/pdf/SQL-Kaggle.pdf"
+      pdfUrl: "/pdf/SQL-Kaggle.pdf",
+      category: "Data Analytics",
+      isPinned: true
+    },
+    {
+      title: "Data Analysis with Spreadsheets and SQL",
+      issuedBy: "Meta",
+      issueDate: "February 2025",
+      credentialId: "ZF5LOYO73PRJ",
+      credentialUrl: "https://www.coursera.org/account/accomplishments/verify/ZF5LOYO73PRJ",
+      skills: "Data Analysis, Machine Learning",
+      pdfUrl: "/pdf/DA2.pdf",
+      isPinned: true
+    },
+    {
+      title: "Intro to SQL",
+      issuedBy: "Kaggle",
+      issueDate: "February 2025",
+      credentialUrl: "https://www.kaggle.com/learn/certification/haseeb666/intro-to-sql",
+      skills: "SQL",
+      pdfUrl: "/pdf/SQL-Kaggle.pdf",
+      isPinned: true
     },
     {
       title: "Introduction to Data Analytics",
@@ -881,7 +908,8 @@ const ProjectsSection = () => {
       credentialId: "46A0BUNP8V8W",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/46A0BUNP8V8W",
       skills: "Data Analysis",
-      pdfUrl: "/pdf/DA1.pdf"
+      pdfUrl: "/pdf/DA1.pdf",
+      isPinned: true
     },
     {
       title: "Introduction to Data Analysis using Microsoft Excel",
@@ -890,7 +918,8 @@ const ProjectsSection = () => {
       credentialId: "SRYB8Q35SLZ2",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/SRYB8Q35SLZ2",
       skills: "Microsoft Excel",
-      pdfUrl: "/pdf/EX1.pdf"
+      pdfUrl: "/pdf/EX1.pdf",
+      isPinned: false
     },
     {
       title: "Web Development With HTML",
@@ -898,7 +927,8 @@ const ProjectsSection = () => {
       issueDate: "June 2022",
       credentialId: "EDPT1655911527629M",
       skills: "HTML, Cascading Style Sheets (CSS)",
-      pdfUrl: "/pdf/HTML.pdf"
+      pdfUrl: "/pdf/HTML.pdf",
+      isPinned: false
     }
   ];
 
@@ -920,33 +950,64 @@ const ProjectsSection = () => {
     // ... other projects
   ];
 
+  const pinnedCertificates = certificates.filter(cert => cert.isPinned);
+  const displayedCertificates = showAll ? certificates : pinnedCertificates;
 
   return (
     <div>
-      <h2 className="text-3xl font-bold mb-6">Courses & Projects</h2>
-      {/* <h2 className="text-3xl font-bold mb-6">Courses</h2> */}
-
-      {/* Courses Section */}
-      <div className="mb-8">  
-        <h3 className="text-2xl font-semibold mb-4">Relevant Courses</h3>
-
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold">Certificates & Projects</h2>
+      </div>
+      
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-2xl font-semibold">Certificates ({certificates.length})</h3>
+          {certificates.length > pinnedCertificates.length && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="relative inline-flex shadow-md items-center px-4 py-2 text-sm font-medium text-white 
+                        bg-blue-600 rounded-full border-3 border-blue-600 transition-all duration-300 
+                        hover:bg-transparent hover:text-blue-600 group"
+            >             
+                            
+              <span className="relative">
+                {showAll ? 'Show Less' : 'Show All'}
+              </span>
+              <span className={`ml-2 transform transition-transform duration-300 ${showAll ? 'rotate-180' : 'rotate-0'}`}>
+                ↓
+              </span>
+            </button>
+          )}
+        </div>
+        
         <div className="grid md:grid-cols-2 gap-6">
-          {certificates.map((cert, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-              <h4 className="text-xl font-semibold">{cert.title}</h4>
+          {displayedCertificates.map((cert, index) => (
+            <div 
+              key={index} 
+              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 
+                         transform opacity-0 animate-fade-slide-up"
+              style={{
+                animationDelay: `${index * 100}ms`,
+                animationFillMode: 'forwards'
+              }}
+            >
+              <h4 className="text-xl font-semibold mb-3">{cert.title}</h4>
               <p className="text-gray-600">Issued By: {cert.issuedBy}</p>
               <p className="text-gray-600">Issue Date: {cert.issueDate}</p>
-              <p className="text-gray-600">Credential ID: {cert.credentialId}</p>
+              {cert.credentialId && (
+                <p className="text-gray-600">Credential ID: {cert.credentialId}</p>
+              )}
               {cert.credentialUrl && (
                 <p className="text-gray-600">
-                  Credential URL: <a href={cert.credentialUrl} target="_blank" className="text-blue-600 hover:underline">View</a>
+                  Credential URL: <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View</a>
                 </p>
               )}
               <p className="text-gray-600">Skills Gained: {cert.skills}</p>
               <div className="mt-4">
-                <button 
-                  className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-md border-3 border-blue-600 transition-all 
-                    hover:bg-transparent hover:text-blue-600"
+                <button
+                  className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-md border-3 border-blue-600 
+                            transition-all duration-300 hover:bg-transparent hover:text-blue-600 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   onClick={() => openModal(cert.pdfUrl)}
                 >
                   View Certificate
@@ -956,8 +1017,24 @@ const ProjectsSection = () => {
           ))}
         </div>
       </div>
-
-      {/* PDF Modal */}
+      
+      <style jsx>{`
+        @keyframes fade-slide-up {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-slide-up {
+          animation: fade-slide-up 0.5s ease-out;
+        }
+      `}</style>
+      
       <PDFModal
         isOpen={isModalOpen}
         onClose={closeModal}
