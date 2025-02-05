@@ -1,14 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  BadgeCheck,
+  Briefcase,
+  Eye, EyeOff,
+  FileText,
+  FileUser,
+  Github,
+  Home,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  Menu,
+  Notebook, Phone,
+  Send,
+  Share2,
+  ThumbsUp,
+  User,
+  X
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-// import { Link } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  X, Home, Github, User, Briefcase, FileText, Code, FileUser, Menu, ChevronLeft, ChevronRight,
-  Send, Notebook, Phone, Mail, Linkedin, MapPin, Instagram, ThumbsUp, Share2, Eye, EyeOff  } from 'lucide-react';
-import { div } from 'framer-motion/client';
+import remarkGfm from "remark-gfm";
+
+
+
 
 
 // Sidebar Button Component
@@ -66,6 +84,7 @@ const SidebarButton = ({ icon: Icon, label, isActive, isLabelsVisible, hoveredSe
   );
 };
   
+
 const PortfolioWebsite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredSection, setHoveredSection] = useState(null);
@@ -98,9 +117,10 @@ const PortfolioWebsite = () => {
     { key: 'home', icon: Home, label: 'Home' },
     { key: 'about', icon: User, label: 'About' },
     { key: 'education', icon: FileText, label: 'Education' },
-    { key: 'experience', icon: Briefcase, label: 'Experience' },
-    { key: 'projects', icon: Code, label: 'Courses' },
-    { key: 'blog', icon: Notebook, label: 'Blog' },
+    { key: 'experience', icon: Briefcase, label: 'Experiences' },
+    { key: 'certificate', icon: BadgeCheck, label: 'Certificates' },
+    // { key: 'projects', icon: Code, label: 'Projects' },
+    { key: 'blog', icon: Notebook, label: 'Blogs' },
     { key: 'contact', icon: Send, label: 'Contact' }
   ];
 
@@ -110,7 +130,8 @@ const PortfolioWebsite = () => {
       about: <AboutSection />,
       education: <EducationSection />,
       experience: <ExperienceSection />,
-      projects: <ProjectsSection />,
+      certificate: <CertificateSection />,
+      // projects: <ProjectsSection />,
       blog: <BlogPage />,
       contact: <ContactSection />
     };
@@ -141,7 +162,7 @@ const PortfolioWebsite = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarVisible(!sidebarVisible)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white/90 shadow-lg"
+        className="md:hidden fixed bottom-4 left-4 z-50 p-2 rounded-lg bg-white/90 shadow-lg"
       >
         {sidebarVisible ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
@@ -240,11 +261,11 @@ const PortfolioWebsite = () => {
     </div>
   );
 };
-      
+
 
 // Home Section
 const HomeSection = () => (
-  <div className=" flex items-center justify-center p-4">
+  <div className="flex items-center justify-center p-4">
     <div className='w-full flex flex-col justify-center items-center md:flex-row max-w-250 bg-white rounded-xl p-8 
                     shadow-md hover:shadow-lg md:space-x-12 p-6 md:space-y-0 space-y-6 transition-all duration-300 mt-15'>
       {/* Profile Photo */}
@@ -284,35 +305,35 @@ const HomeSection = () => (
         {/* Social Links */}
         {/* Linked IN */}
         <div className="flex space-x-5 mb-6">
-          <motion.a 
+          <a
             href="#" 
-            className="hover:text-blue-500"
-            whileHover={{ scale: 1.2 }}
+            className="text-white border bg-blue-600 p-2 border-3 border-blue-600 rounded-md
+                        hover:text-blue-600 hover:bg-transparent transition-all duration-300"
           >
-            <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
+            <a href="https://www.linkedin.com/in/haseeb-ops/">
               <Linkedin size={24} />
             </a>
-          </motion.a>
+          </a>
           {/* GitHub */}
-          <motion.a 
+          <a 
             href="#" 
-            className="hover:text-blue-500"
-            whileHover={{ scale: 1.2 }}
+            className="text-white border bg-blue-600 p-2 border-3 border-blue-600 rounded-md
+                        hover:text-blue-600 hover:bg-transparent transition-all duration-300"
           >
             <a href="https://github.com/haseeb-ops" className="hover:text-blue-500">
               <Github size={24} />
             </a>
-          </motion.a>
+          </a>
           {/* CV */}
-          <motion.a 
+          <a 
             href="#" 
-            className="hover:text-blue-500"
-            whileHover={{ scale: 1.2 }}
+            className="text-white border bg-blue-600 p-2 border-3 border-blue-600 rounded-md
+                        hover:text-blue-600 hover:bg-transparent transition-all duration-300"
           >
             <a href="/pdf/Haseeb New CV.pdf" className="hover:text-blue-500">
               <FileUser size={24} />
             </a>
-          </motion.a>
+          </a>
         </div>
 
         {/* Professional Summary */}
@@ -372,8 +393,9 @@ const ContactSection = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-150 bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300">
+    <div className="flex items-center justify-center p-4">
+      <div className="w-full mt-16 md:flex-row max-w-150 bg-white rounded-xl p-8 
+                  shadow-md hover:shadow-lg md:space-x-12 md:space-y-0 space-y-6 transition-all duration-300">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Contact Me</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -437,7 +459,7 @@ const ContactSection = () => {
           <div className="flex space-x-5 items-center justify-center">
             <motion.a 
               href="#" 
-              className="hover:text-blue-500"
+              className="hover:text-blue-500 "
               whileHover={{ scale: 1.2 }}
             >
               <a href="https://www.linkedin.com/in/haseeb-ops/" className="hover:text-blue-500">
@@ -508,8 +530,8 @@ const AboutSection = () => (
         <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
         <div className="flex flex-wrap gap-2 ">
           {['Python', 'SQL', 'Data Analysis', 'Data Visualization', 'Ai Tools'].map(skill => (
-            <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
-                                          transform transition-all duration-300 hover:scale-110">
+            <span key={skill} className="px-3 py-1 bg-blue-200 text-blue-900 rounded-full text-sm
+                                          transform transition-all duration-300 hover:scale-105">
               {skill}
             </span>
           ))}
@@ -519,8 +541,8 @@ const AboutSection = () => (
         <h3 className="text-xl font-semibold mb-4">Software Skills</h3>
         <div className="flex flex-wrap gap-2">
           {['Adobe Photoshop', 'Adobe Illustrator', 'Excel', 'Access', 'Microsoft Office', 'Power BI', 'Adobe InDesign'].map(skill => (
-            <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
-                                          transform transition-all duration-300 hover:scale-110">
+            <span key={skill} className="px-3 py-1 bg-blue-200 text-blue-900 rounded-full text-sm
+                                          transform transition-all duration-300 hover:scale-105">
               {skill}
             </span>
           ))}
@@ -671,175 +693,28 @@ const PDFModal = ({ isOpen, onClose, pdfUrl }) => {
   );
 };
 
-// Project Modal
-const ProjectModal = ({ isOpen, onClose, project }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [modalAnimation, setModalAnimation] = useState('opacity-0 scale-95');
 
-  useEffect(() => {
-    if (isOpen) {
-      setModalAnimation('opacity-100 scale-100');
-    } else {
-      setModalAnimation('opacity-0 scale-95');
-    }
-  }, [isOpen]);
-
-  if (!isOpen || !project) return null;
-
-  const showNavigation = project.images && project.images.length > 1;
-
-  const nextImage = () => {
-    if (project.images && project.images.length > 1) {
-      setCurrentImageIndex((prev) => 
-        prev === project.images.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const previousImage = () => {
-    if (project.images && project.images.length > 1) {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? project.images.length - 1 : prev - 1
-      );
-    }
-  };
-
-  const currentImage = project.images && project.images[currentImageIndex];
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div 
-        className={`
-          bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 relative
-          transform transition-all duration-300 ease-out
-          max-h-[90vh] flex flex-col
-          ${modalAnimation}
-        `}
-      >
-        <div className="p-4 border-b flex items-center justify-between shrink-0">
-          <h2 className="text-lg font-semibold text-gray-900">{project.title}</h2>
-          <button
-            onClick={onClose}
-            className="rounded-full p-2 hover:bg-gray-100 transition-colors duration-200"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
-        </div>
-        
-        <div className="p-6 overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-blue-100">
-          {currentImage && (
-            <div className="relative rounded-lg overflow-hidden border-2 border-blue-600">
-              <motion.img
-                key={currentImageIndex}
-                src={currentImage}
-                alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-64 object-cover"
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.3 }}
-              />
-
-              {showNavigation && (
-                <>
-                  <button
-                    onClick={previousImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
-                             text-white transition-all duration-300 hover:bg-black/70 
-                             transform hover:scale-110 active:scale-95"
-                  >
-                    <ChevronLeft size={24} />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
-                             text-white transition-all duration-300 hover:bg-black/70 
-                             transform hover:scale-110 active:scale-95"
-                  >
-                    <ChevronRight size={24} />
-                  </button>
-
-                  <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 
-                                rounded text-sm backdrop-blur-sm">
-                    {currentImageIndex + 1} / {project.images.length}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-          
-          <div>
-            <div className="space-x-4 mt-5 flex">
-              <a
-                href={project.projectUrl}
-                className="bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
-                            hover:bg-transparent hover:text-blue-600"
-              >
-                View Project
-              </a>
-              <a
-                href={project.githubUrl}
-                className="bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
-                            hover:bg-transparent hover:text-blue-600"
-              >
-                GitHub Repo
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-6 space-y-4">
-            {project.date && (
-              <div>
-                <h4 className="font-semibold text-lg">Date</h4>
-                <p>{project.date}</p>
-              </div>
-            )}
-
-            {project.fullDescription && (
-              <div>
-                <h4 className="font-semibold text-lg">Description</h4>
-                <p>{project.fullDescription}</p>
-              </div>
-            )}
-
-            {project.skills && project.skills.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-lg">Skills & Technologies</h4>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {project.skills.map((skill, index) => (
-                    <motion.span
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm
-                               transform transition-all duration-300 hover:scale-110"
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-// Project Section -- Main
-const ProjectsSection = () => {
+// Certificate Section
+const CertificateSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const openModal = (url) => {
-    setPdfUrl(url);
-    setModalOpen(true);
+    if (!isMobile) {
+      setPdfUrl(url);
+      setModalOpen(true);
+    }
   };
 
   const closeModal = () => {
@@ -847,30 +722,30 @@ const ProjectsSection = () => {
     setPdfUrl('');
   };
 
-  const openProjectModal = (project) => {
-    setSelectedProject(project);
-    setModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeProjectModal = () => {
-    setModalOpen(false);
-    setSelectedProject(null);
-    document.body.style.overflow = 'unset';
-  };
-
-
   const certificates = [
     {
+      title: "Python for Data Science, AI & Development",
+      issuedBy: "IBM",
+      issueDate: "February 2025",
+      credentialUrl: "https://www.coursera.org/account/accomplishments/verify/F7EDZ1JZ9J1O",
+      skills: "Python, NumPy, Pandas",
+      pdfUrl: "/pdf/Python for DS.pdf"
+    },
+    {
+      title: "Python for Data Science and AI",
+      issuedBy: "IBM",
+      issueDate: "February 2025",
+      credentialUrl: "https://www.credly.com/badges/ba360df7-5076-407d-9be5-dc023d59bbed",
+      skills: "Python",
+      pdfUrl: "/pdf/Badge1.pdf"
+    },
+    {
       title: "Data Analysis with Spreadsheets and SQL",
       issuedBy: "Meta",
       issueDate: "February 2025",
-      credentialId: "ZF5LOYO73PRJ",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/ZF5LOYO73PRJ",
-      skills: "Data Analysis, Machine Learning",
-      pdfUrl: "/pdf/DA2.pdf",
-      category: "Data Analytics",
-      isPinned: true
+      skills: "SQL, Spreadsheet, Tableau",
+      pdfUrl: "/pdf/DA2.pdf"
     },
     {
       title: "Intro to SQL",
@@ -878,215 +753,196 @@ const ProjectsSection = () => {
       issueDate: "February 2025",
       credentialUrl: "https://www.kaggle.com/learn/certification/haseeb666/intro-to-sql",
       skills: "SQL",
-      pdfUrl: "/pdf/SQL-Kaggle.pdf",
-      category: "Data Analytics",
-      isPinned: true
-    },
-    {
-      title: "Data Analysis with Spreadsheets and SQL",
-      issuedBy: "Meta",
-      issueDate: "February 2025",
-      credentialId: "ZF5LOYO73PRJ",
-      credentialUrl: "https://www.coursera.org/account/accomplishments/verify/ZF5LOYO73PRJ",
-      skills: "Data Analysis, Machine Learning",
-      pdfUrl: "/pdf/DA2.pdf",
-      isPinned: true
-    },
-    {
-      title: "Intro to SQL",
-      issuedBy: "Kaggle",
-      issueDate: "February 2025",
-      credentialUrl: "https://www.kaggle.com/learn/certification/haseeb666/intro-to-sql",
-      skills: "SQL",
-      pdfUrl: "/pdf/SQL-Kaggle.pdf",
-      isPinned: true
+      pdfUrl: "/pdf/SQL-Kaggle.pdf"
     },
     {
       title: "Introduction to Data Analytics",
       issuedBy: "Meta",
       issueDate: "January 2025",
-      credentialId: "46A0BUNP8V8W",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/46A0BUNP8V8W",
       skills: "Data Analysis",
-      pdfUrl: "/pdf/DA1.pdf",
-      isPinned: true
+      pdfUrl: "/pdf/DA1.pdf"
     },
     {
       title: "Introduction to Data Analysis using Microsoft Excel",
       issuedBy: "Coursera Project Network",
       issueDate: "August 2024",
-      credentialId: "SRYB8Q35SLZ2",
       credentialUrl: "https://www.coursera.org/account/accomplishments/verify/SRYB8Q35SLZ2",
       skills: "Microsoft Excel",
-      pdfUrl: "/pdf/EX1.pdf",
-      isPinned: false
+      pdfUrl: "/pdf/EX1.pdf"
     },
     {
       title: "Web Development With HTML",
       issuedBy: "Edapt",
       issueDate: "June 2022",
-      credentialId: "EDPT1655911527629M",
       skills: "HTML, Cascading Style Sheets (CSS)",
-      pdfUrl: "/pdf/HTML.pdf",
-      isPinned: false
+      pdfUrl: "/pdf/HTML.pdf"
     }
   ];
 
-  const projects = [
-    {
-      title: "Project 1",
-      shortDescription: "Brief project description, technologies used",
-      fullDescription: "Detailed explanation of the project, its goals, and implementation details.asfgnsdfkjgnsdrthodfiugvbzfn,clgdhizug dl;fgbzdflkgjdrzighfnxcvbnzitughfnbjkn cvsdigherouig righdfkgj dirutghdf, ertghdfkghaeurfgsdgjkd rtguihdfgbjZHrio asghfdkbv rdyhfugijvnfvbxhniughdfbkjcvnbuyzdgdf difghzudghfkbjnuzyhgf gdziuoghdfjkgbvnvc",
-      projectUrl: "#",
-      githubUrl: "#",
-      date: "January 2024",
-      skills: ["React", "Node.js", "MongoDB"],
-      images: [
-        "/images/IMG_0327.jpeg",
-        "/images/HTML.png",
-        "/images/CA2.jpeg"
-      ]
-    },
-    // ... other projects
-  ];
-
-  const pinnedCertificates = certificates.filter(cert => cert.isPinned);
-  const displayedCertificates = showAll ? certificates : pinnedCertificates;
-
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold">Certificates & Projects</h2>
-      </div>
-      
+      <h2 className="text-3xl font-bold mb-6">Certificates ({certificates.length})</h2>
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-2xl font-semibold">Certificates ({certificates.length})</h3>
-          {certificates.length > pinnedCertificates.length && (
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="relative inline-flex shadow-md items-center px-4 py-2 text-sm font-medium text-white 
-                        bg-blue-600 rounded-full border-3 border-blue-600 transition-all duration-300 
-                        hover:bg-transparent hover:text-blue-600 group"
-            >             
-                            
-              <span className="relative">
-                {showAll ? 'Show Less' : 'Show All'}
-              </span>
-              <span className={`ml-2 transform transition-transform duration-300 ${showAll ? 'rotate-180' : 'rotate-0'}`}>
-                ↓
-              </span>
-            </button>
-          )}
-        </div>
-        
         <div className="grid md:grid-cols-2 gap-6">
-          {displayedCertificates.map((cert, index) => (
-            <div 
-              key={index} 
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 
-                         transform opacity-0 animate-fade-slide-up"
-              style={{
-                animationDelay: `${index * 100}ms`,
-                animationFillMode: 'forwards'
-              }}
-            >
-              <h4 className="text-xl font-semibold mb-3">{cert.title}</h4>
+          {certificates.map((cert, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+              <h4 className="text-xl font-semibold">{cert.title}</h4>
               <p className="text-gray-600">Issued By: {cert.issuedBy}</p>
               <p className="text-gray-600">Issue Date: {cert.issueDate}</p>
-              {cert.credentialId && (
-                <p className="text-gray-600">Credential ID: {cert.credentialId}</p>
-              )}
               {cert.credentialUrl && (
                 <p className="text-gray-600">
-                  Credential URL: <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View</a>
+                  Credential URL: <a href={cert.credentialUrl} target="_blank" className="text-blue-600 hover:underline">View</a>
                 </p>
               )}
               <p className="text-gray-600">Skills Gained: {cert.skills}</p>
-              <div className="mt-4">
-                <button
-                  className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-md border-3 border-blue-600 
-                            transition-all duration-300 hover:bg-transparent hover:text-blue-600 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  onClick={() => openModal(cert.pdfUrl)}
+              <div className="mt-4 flex text-center">
+                {!isMobile && (
+                  <button 
+                    className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-md border-3 border-blue-600 transition-all 
+                      hover:bg-transparent hover:text-blue-600"
+                    onClick={() => openModal(cert.pdfUrl)}
+                  >
+                    View Certificate
+                  </button>
+                )}
+                <a 
+                  href={cert.credentialUrl}
+                  target="_blank"
+                  className={`bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-md border-3 border-blue-600 transition-all 
+                    hover:bg-transparent hover:text-blue-600 ${!isMobile ? 'ml-3' : ''}`}
                 >
-                  View Certificate
-                </button>
+                  View Credential
+                </a>
               </div>
             </div>
           ))}
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes fade-slide-up {
-          0% {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-slide-up {
-          animation: fade-slide-up 0.5s ease-out;
-        }
-      `}</style>
-      
+
       <PDFModal
         isOpen={isModalOpen}
         onClose={closeModal}
         pdfUrl={pdfUrl}
       />
-
-      {/* Projects Section */}
-      <div>
-        <h3 className="text-2xl font-semibold mb-4">Projects</h3>
-        <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-xl"
-            >
-              <h4 className="text-xl font-semibold">{project.title}</h4>
-              <p>{project.shortDescription}</p>
-              <div className="mt-5 flex items-center justify-between">
-                <div className="space-x-4">
-                  <a
-                    onClick={() => openProjectModal(project)}
-                    className="bg-transparent text-blue-600 px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
-                                hover:bg-blue-600 hover:text-white"
-                  >
-                    View Project
-                  </a>
-                  <a
-                    href={project.githubUrl}
-                    className="bg-transparent text-blue-600 px-3 py-1.5 rounded-md shadow-md border-3 border-blue-600 transition-all 
-                                hover:bg-blue-600 hover:text-white"
-                  >
-                    GitHub Repo
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <ProjectModal
-          isOpen={isModalOpen}
-          onClose={closeProjectModal}
-          project={selectedProject}
-        />
-      </div>
     </div>
   );
 };
 
+
+
+// Project Section
+// const ProjectsSection = ({ project }) => {
+//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+//   if (!project) {
+//     return <p className="text-center text-gray-500">Project not found.</p>;
+//   }
+
+//   const showNavigation = project.images && project.images.length > 1;
+//   const currentImage = project.images && project.images[currentImageIndex];
+
+//   const nextImage = () => {
+//     setCurrentImageIndex((prev) =>
+//       prev === project.images.length - 1 ? 0 : prev + 1
+//     );
+//   };
+
+//   const previousImage = () => {
+//     setCurrentImageIndex((prev) =>
+//       prev === 0 ? project.images.length - 1 : prev - 1
+//     );
+//   };
+
+//   return (
+//     <div className="max-w-4xl mx-auto p-6">
+//       <h1 className="text-3xl font-bold text-gray-900 mb-4">{project.title}</h1>
+//       <div className="relative rounded-lg overflow-hidden border-2 border-blue-600 mb-6">
+//         {currentImage && (
+//           <motion.img
+//             key={currentImageIndex}
+//             src={currentImage}
+//             alt={`${project.title} - Image ${currentImageIndex + 1}`}
+//             className="w-full h-64 object-cover"
+//             initial={{ opacity: 0, x: 100 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             transition={{ duration: 0.3 }}
+//           />
+//         )}
+//         {showNavigation && (
+//           <>
+//             <button
+//               onClick={previousImage}
+//               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
+//               text-white hover:bg-black/70 transform hover:scale-110"
+//             >
+//               <ChevronLeft size={24} />
+//             </button>
+//             <button
+//               onClick={nextImage}
+//               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full 
+//               text-white hover:bg-black/70 transform hover:scale-110"
+//             >
+//               <ChevronRight size={24} />
+//             </button>
+//             <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+//               {currentImageIndex + 1} / {project.images.length}
+//             </div>
+//           </>
+//         )}
+//       </div>
+
+//       <div className="space-y-6">
+//         {project.fullDescription && (
+//           <div>
+//             <h2 className="text-lg font-semibold">Description</h2>
+//             <p className="text-gray-700">{project.fullDescription}</p>
+//           </div>
+//         )}
+//         {project.date && (
+//           <div>
+//             <h2 className="text-lg font-semibold">Date</h2>
+//             <p>{project.date}</p>
+//           </div>
+//         )}
+//         {project.skills && project.skills.length > 0 && (
+//           <div>
+//             <h2 className="text-lg font-semibold">Skills & Technologies</h2>
+//             <div className="flex flex-wrap gap-2 mt-2">
+//               {project.skills.map((skill, index) => (
+//                 <span
+//                   key={index}
+//                   className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+//                 >
+//                   {skill}
+//                 </span>
+//               ))}
+//             </div>
+//           </div>
+//         )}
+
+//         <div className="mt-4 flex space-x-4">
+//           <a
+//             href={project.projectUrl}
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition-all hover:bg-transparent hover:text-blue-600 border border-blue-600"
+//           >
+//             View Project
+//           </a>
+//           <a
+//             href={project.githubUrl}
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition-all hover:bg-transparent hover:text-blue-600 border border-blue-600"
+//           >
+//             GitHub Repo
+//           </a>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 // Blog
 const BlogPage = () => {
