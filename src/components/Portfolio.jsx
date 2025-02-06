@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { title } from 'framer-motion/client';
 import {
   BadgeCheck,
   Briefcase,
@@ -12,18 +13,14 @@ import {
   Mail,
   MapPin,
   Menu,
-  Notebook, Phone,
+  Notebook, Phone, ArrowLeft,
   Send,
   Share2,
-  ThumbsUp,
+  Heart, Search,
   User,
   X
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import remarkGfm from "remark-gfm";
+import React, { useState, useEffect } from 'react';
 
 
 
@@ -132,7 +129,7 @@ const PortfolioWebsite = () => {
       experience: <ExperienceSection />,
       certificate: <CertificateSection />,
       // projects: <ProjectsSection />,
-      blog: <BlogPage />,
+      blog: <BlogSection />,
       contact: <ContactSection />
     };
     return sectionComponents[activeSection];
@@ -945,217 +942,428 @@ const CertificateSection = () => {
 // };
 
 // Blog
-const BlogPage = () => {
-  const [blogPosts, setBlogPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [comments, setComments] = useState("");
+// const BlogPage = () => {
+//   const [blogPosts, setBlogPosts] = useState([]);
+//   const [selectedPost, setSelectedPost] = useState(null);
+//   const [comments, setComments] = useState("");
+
+//   useEffect(() => {
+//     const fetchMarkdownFiles = async () => {
+//       const postDates = [
+//         { date: "2025-02-03",
+//           title: "Understanding SQL Joins",
+//           image: "https://www.devtodev.com/upload/images/sql5_2.png"}
+//         // { date: "2025-01-10", 
+//         //   title: "Mastering CSS Grid",
+//         //   image: "https://www.devtodev.com/upload/images/sql5_2.png"},
+//         // { date: "2025-01-05", title: 
+//         //   "JavaScript Best Practices",
+//         //   image: "https://www.devtodev.com/upload/images/sql5_2.png"}
+//       ]; // Custom titles added here
+
+//       const posts = await Promise.all(
+//         postDates.map(async ({ date, title, image}) => {
+//           const response = await fetch(`/blogPosts/${date}.md`);
+//           if (!response.ok) return null;
+//           const content = await response.text();
+//           return { id: date, title, content, likes: 0, image}; // Add a like count for each post
+//         })
+//       );
+//       setBlogPosts(posts.filter(Boolean));
+//     };
+
+//     fetchMarkdownFiles();
+//   }, []);
+
+//   const handleCommentSubmit = (e) => {
+//     e.preventDefault();
+//     // Handle comment submission (you can store it, or post to a backend)
+//     alert(`Your comment: ${comments}`);
+//     setComments(""); // Clear comment input after submission
+//   };
+
+//   const postVariants = {
+//     hidden: { opacity: 0 },
+//     visible: { opacity: 1, transition: { duration: 0.5 } },
+//   };
+
+//   const buttonVariants = {
+//     hover: { scale: 1.05, transition: { duration: 0.3 } },
+//     tap: { scale: 0.9 },
+//   };
+
+//   const handleLike = (postId) => {
+//     setBlogPosts(prevPosts =>
+//       prevPosts.map(post =>
+//         post.id === postId ? { ...post, likes: post.likes + 1 } : post
+//       )
+//     );
+//   };
+
+//   if (selectedPost) {
+//     return (
+//       <motion.div className="max-w-4xl mx-auto px-4 py-8 font-montserrat" initial="hidden" animate="visible" variants={postVariants}>
+//         <button
+//           onClick={() => setSelectedPost(null)}
+//           className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:-translate-x-1"
+//           whileHover={{ scale: 1.1 }}
+//           whileTap={{ scale: 0.95 }}
+//         >
+//           ← Back to Posts
+//         </button>
+//         <article className="prose lg:prose-xl">
+//           <h1 className="text-5xl font-bold mt-10">{selectedPost.title}</h1> {/* Main heading styling */}
+//           <p className="text-sm text-gray-500 mt-4 font-semibold">
+//             Posted on: {new Date(selectedPost.id).toLocaleDateString()}
+//           </p>
+//           <img 
+//             src={selectedPost.image}
+//             alt={selectedPost.title}
+//             className="w-full h-full object-cover mt-5"
+//           />
+//           {/* Add grey line below Posted on */}
+//           <div className="border-b border-gray-300 mt-5"></div>
+//           <ReactMarkdown
+//             remarkPlugins={[remarkGfm]}
+//             components={{
+//               h1: ({ children }) => <h1 className="text-4xl font-bold mt-10">{children}</h1>,
+//               h2: ({ children }) => <h2 className="text-3xl font-bold mt-8">{children}</h2>,
+//               h3: ({ children }) => <h3 className="text-2xl font-bold mt-6">{children}</h3>,
+//               p: ({ children }) => <p className="text-lg leading-relaxed mt-2">{children}</p>,
+//               ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+//               ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
+//               table: ({ children }) => (
+//                 <table className="border-collapse border border-gray-300 w-full">{children}</table>
+//               ),
+//               th: ({ children }) => (
+//                 <th className="border border-gray-300 bg-gray-200 px-3 py-2">{children}</th>
+//               ),
+//               td: ({ children }) => <td className="border border-gray-300 px-3 py-2">{children}</td>,
+//               blockquote: ({ children }) => (
+//                 <blockquote className="border-l-4 border-gray-500 pl-4 italic text-gray-600">
+//                   {children}
+//                 </blockquote>
+//               ),
+//               code({ node, inline, className, children, ...props }) {
+//                 const match = /language-(\w+)/.exec(className || "");
+//                 return !inline && match ? (
+//                   <SyntaxHighlighter style={dracula} language={match[1]} PreTag="div">
+//                     {String(children).replace(/\n$/, "")}
+//                   </SyntaxHighlighter>
+//                 ) : (
+//                   <code className="bg-gray-100 px-1 py-0.5 rounded text-red-500" {...props}>
+//                     {children}
+//                   </code>
+//                 );
+//               },
+//               hr: () => <hr className="my-4 border-t-2 border-gray-300" />,
+//             }}
+//           >
+//             {selectedPost.content}
+//           </ReactMarkdown>
+//         </article>
+
+//         {/* Line under the content */}
+//         <div className="border-b border-gray-300 mt-8"></div>
+
+//         {/* Like and Share buttons */}
+//         <div className="flex items-center justify-between mt-4">
+//           <motion.button
+//             className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
+//             variants={buttonVariants}
+//             whileHover="hover"
+//             whileTap="tap"
+//             onClick={() => handleLike(selectedPost.id)}
+//           >
+//             <ThumbsUp size={20} className="mr-2" /> {selectedPost.likes} Likes
+//           </motion.button>
+//           <motion.button
+//             className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
+//             variants={buttonVariants}
+//             whileHover="hover"
+//             whileTap="tap"
+//           >
+//             <Share2 size={20} className="mr-2" /> Share
+//           </motion.button>
+//         </div>
+
+//         {/* Comment Section */}
+//         <div className="mt-8">
+//           <h3 className="text-2xl font-bold mb-4">Add a Comment</h3>
+//           <form onSubmit={handleCommentSubmit} className="space-y-4">
+//             <textarea
+//               className="w-full p-4 border border-gray-300 rounded-lg"
+//               rows="4"
+//               placeholder="Write your comment here..."
+//               value={comments}
+//               onChange={(e) => setComments(e.target.value)}
+//             />
+//             <motion.button
+//               type="submit"
+//               className="px-6 py-2 bg-blue-500 text-white rounded-full font-bold hover:bg-blue-600 transition-colors"
+//               variants={buttonVariants}
+//               whileHover={{scale: 1.02}}
+//               whileTap="tap"
+//             >
+//               Submit Comment
+//             </motion.button>
+//           </form>
+//         </div>
+//       </motion.div>
+//     );
+//   }
+
+//   return (
+//     <div className="mb-12 animate-fadeIn">
+//     <h2 className="text-3xl font-bold mb-6">Blog</h2>
+//     <div className="grid md:grid-cols-3 gap-8">
+//     {blogPosts.map(post => (
+//       <div 
+//         key={post.id} 
+//         className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
+//       >
+//         <div className="p-6">
+//           <img 
+//             src={post.image} 
+//             alt={post.title}
+//             className="w-full h-48 object-cover"
+//           />
+//           <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+//           <p className="text-gray-500 text-sm mb-2 font-semibold">Posted on: {new Date(post.id).toLocaleDateString()}</p>
+//           <div className="border-b border-gray-300 mb-4"></div>
+//           <div className="flex justify-between items-center">
+//             <button 
+//               className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
+//               onClick={() => setSelectedPost(post)}
+//             >
+//               Read More →
+//             </button>
+//             <button 
+//               className="flex items-center text-blue-500 font-semibold hover:text-blue-600 
+//                           hover:scale-105 transition-all duration-300"
+//               onClick={() => handleLike(post.id)}
+//             >
+//               <ThumbsUp size={20} className="mr-2 " /> {post.likes} Likes
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     ))}
+//   </div>
+// </div>
+//   );
+// };
+
+
+
+
+const BlogSection = () => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [likes, setLikes] = useState({});
+  const [currentBlog, setCurrentBlog] = useState(null);
+  const [blogContent, setBlogContent] = useState('');
 
   useEffect(() => {
-    const fetchMarkdownFiles = async () => {
-      const postDates = [
-        { date: "2025-02-03",
-          title: "Understanding SQL Joins",
-          image: "https://www.devtodev.com/upload/images/sql5_2.png"}
-        // { date: "2025-01-10", 
-        //   title: "Mastering CSS Grid",
-        //   image: "https://www.devtodev.com/upload/images/sql5_2.png"},
-        // { date: "2025-01-05", title: 
-        //   "JavaScript Best Practices",
-        //   image: "https://www.devtodev.com/upload/images/sql5_2.png"}
-      ]; // Custom titles added here
-
-      const posts = await Promise.all(
-        postDates.map(async ({ date, title, image}) => {
-          const response = await fetch(`/blogPosts/${date}.md`);
-          if (!response.ok) return null;
-          const content = await response.text();
-          return { id: date, title, content, likes: 0, image}; // Add a like count for each post
-        })
-      );
-      setBlogPosts(posts.filter(Boolean));
-    };
-
-    fetchMarkdownFiles();
+    const savedLikes = localStorage.getItem('blogLikes');
+    if (savedLikes) {
+      setLikes(JSON.parse(savedLikes));
+    }
   }, []);
 
-  const handleCommentSubmit = (e) => {
+  const blogs = [
+    {
+    id: 1,
+    title: "Understanding SQL Joins",
+    category: "Data Analysis",
+    date: "2025-02-06",
+    image: "https://media.licdn.com/dms/image/v2/D5622AQETuTSUAvnKVA/feedshare-shrink_2048_1536/B56ZSHvakgHQAo-/0/1737444143590?e=1741824000&v=beta&t=xe_cMUG_eHAtZY3EIj0A2sEfRO2Wpd5uXz1y0_xey88",
+    excerpt: "SQL Joins are a fundamental concept in database...",
+    filePath: "/blogPosts/SQL Joins.html"
+    },
+  ];
+
+  const categories = ["All", "Data Analysis"];
+
+  const filteredBlogs = blogs.filter(blog => {
+    const matchesCategory = selectedCategory === 'all' || blog.category.toLowerCase() === selectedCategory;
+    const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const handleLike = (blogId, e) => {
+    e?.preventDefault();
+    const newLikes = {
+      ...likes,
+      [blogId]: (likes[blogId] || 0) + 1
+    };
+    setLikes(newLikes);
+    localStorage.setItem('blogLikes', JSON.stringify(newLikes));
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+  };
+
+  const handleBlogClick = async (blog, e) => {
     e.preventDefault();
-    // Handle comment submission (you can store it, or post to a backend)
-    alert(`Your comment: ${comments}`);
-    setComments(""); // Clear comment input after submission
+    try {
+      const response = await fetch(blog.filePath);
+      const content = await response.text();
+      setBlogContent(content);
+      setCurrentBlog(blog);
+    } catch (error) {
+      console.error('Error loading blog content:', error);
+    }
   };
 
-  const postVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.5 } },
-  };
-
-  const buttonVariants = {
-    hover: { scale: 1.05, transition: { duration: 0.3 } },
-    tap: { scale: 0.9 },
-  };
-
-  const handleLike = (postId) => {
-    setBlogPosts(prevPosts =>
-      prevPosts.map(post =>
-        post.id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    );
-  };
-
-  if (selectedPost) {
+  // Blog Detail View
+  if (currentBlog) {
     return (
-      <motion.div className="max-w-4xl mx-auto px-4 py-8 font-montserrat" initial="hidden" animate="visible" variants={postVariants}>
-        <button
-          onClick={() => setSelectedPost(null)}
-          className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:-translate-x-1"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 overflow-y-auto bg-gray-50 p-6"
+      >
+        <motion.div 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 300 }}
+          className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8"
         >
-          ← Back to Posts
-        </button>
-        <article className="prose lg:prose-xl">
-          <h1 className="text-5xl font-bold mt-10">{selectedPost.title}</h1> {/* Main heading styling */}
-          <p className="text-sm text-gray-500 mt-4 font-semibold">
-            Posted on: {new Date(selectedPost.id).toLocaleDateString()}
-          </p>
-          <img 
-            src={selectedPost.image}
-            alt={selectedPost.title}
-            className="w-full h-full object-cover mt-5"
+          <button 
+            onClick={() => setCurrentBlog(null)}
+            className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:-translate-x-1"
+          >
+            ← Back to Blogs
+          </button>
+
+          <h1 className="text-4xl font-bold mb-4">{currentBlog.title}</h1>
+          <img
+            src={currentBlog.image}
+            alt={currentBlog.title}
+            className="w-full h-64 object-cover rounded-lg mt-5 mb-6"
           />
-          {/* Add grey line below Posted on */}
-          <div className="border-b border-gray-300 mt-5"></div>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({ children }) => <h1 className="text-4xl font-bold mt-10">{children}</h1>,
-              h2: ({ children }) => <h2 className="text-3xl font-bold mt-8">{children}</h2>,
-              h3: ({ children }) => <h3 className="text-2xl font-bold mt-6">{children}</h3>,
-              p: ({ children }) => <p className="text-lg leading-relaxed mt-2">{children}</p>,
-              ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
-              ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
-              table: ({ children }) => (
-                <table className="border-collapse border border-gray-300 w-full">{children}</table>
-              ),
-              th: ({ children }) => (
-                <th className="border border-gray-300 bg-gray-200 px-3 py-2">{children}</th>
-              ),
-              td: ({ children }) => <td className="border border-gray-300 px-3 py-2">{children}</td>,
-              blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-gray-500 pl-4 italic text-gray-600">
-                  {children}
-                </blockquote>
-              ),
-              code({ node, inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || "");
-                return !inline && match ? (
-                  <SyntaxHighlighter style={dracula} language={match[1]} PreTag="div">
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                ) : (
-                  <code className="bg-gray-100 px-1 py-0.5 rounded text-red-500" {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              hr: () => <hr className="my-4 border-t-2 border-gray-300" />,
-            }}
-          >
-            {selectedPost.content}
-          </ReactMarkdown>
-        </article>
 
-        {/* Line under the content */}
-        <div className="border-b border-gray-300 mt-8"></div>
+          <div 
+            dangerouslySetInnerHTML={{ __html: blogContent }}
+            className="prose max-w-none mb-8"
+          />
 
-        {/* Like and Share buttons */}
-        <div className="flex items-center justify-between mt-4">
-          <motion.button
-            className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            onClick={() => handleLike(selectedPost.id)}
-          >
-            <ThumbsUp size={20} className="mr-2" /> {selectedPost.likes} Likes
-          </motion.button>
-          <motion.button
-            className="flex items-center text-blue-500 hover:text-blue-600 font-semibold"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            <Share2 size={20} className="mr-2" /> Share
-          </motion.button>
-        </div>
-
-        {/* Comment Section */}
-        <div className="mt-8">
-          <h3 className="text-2xl font-bold mb-4">Add a Comment</h3>
-          <form onSubmit={handleCommentSubmit} className="space-y-4">
-            <textarea
-              className="w-full p-4 border border-gray-300 rounded-lg"
-              rows="4"
-              placeholder="Write your comment here..."
-              value={comments}
-              onChange={(e) => setComments(e.target.value)}
-            />
-            <motion.button
-              type="submit"
-              className="px-6 py-2 bg-blue-500 text-white rounded-full font-bold hover:bg-blue-600 transition-colors"
-              variants={buttonVariants}
-              whileHover={{scale: 1.02}}
-              whileTap="tap"
+          <div className="flex justify-between items-center border-t pt-4">
+            <button
+              onClick={() => handleLike(currentBlog.id)}
+              className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors"
             >
-              Submit Comment
-            </motion.button>
-          </form>
-        </div>
+              <Heart 
+                size={20} 
+                className={likes[currentBlog.id] ? 'fill-red-500 text-red-500' : ''} 
+              />
+              <span>{likes[currentBlog.id] || 0}</span>
+            </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
+            >
+              <Share2 size={20} />
+              Share
+            </button>
+          </div>
+        </motion.div>
       </motion.div>
     );
   }
 
+  // Blog List View
   return (
-    <div className="mb-12 animate-fadeIn">
-    <h2 className="text-3xl font-bold mb-6">Blog</h2>
-    <div className="grid md:grid-cols-3 gap-8">
-    {blogPosts.map(post => (
-      <div 
-        key={post.id} 
-        className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
-      >
-        <div className="p-6">
-          <img 
-            src={post.image} 
-            alt={post.title}
-            className="w-full h-48 object-cover"
-          />
-          <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
-          <p className="text-gray-500 text-sm mb-2 font-semibold">Posted on: {new Date(post.id).toLocaleDateString()}</p>
-          <div className="border-b border-gray-300 mb-4"></div>
-          <div className="flex justify-between items-center">
-            <button 
-              className="text-blue-500 hover:text-blue-600 transition-all duration-300 hover:translate-x-1"
-              onClick={() => setSelectedPost(post)}
-            >
-              Read More →
-            </button>
-            <button 
-              className="flex items-center text-blue-500 font-semibold hover:text-blue-600 
-                          hover:scale-105 transition-all duration-300"
-              onClick={() => handleLike(post.id)}
-            >
-              <ThumbsUp size={20} className="mr-2 " /> {post.likes} Likes
-            </button>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="max-w-7xl mx-auto p-6"
+    >
+      <div className="mb-8 space-y-4">
+        <h1 className="text-4xl font-bold">Blog Posts</h1>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search blogs..."
+              className="w-full pl-10 pr-4 py-2 border rounded-lg"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category.toLowerCase())}
+                className={`px-4 py-2 bg-blue-600 rounded-full transition-all duration-300 ${
+                  selectedCategory === category.toLowerCase()
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 hover:bg-blue-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    ))}
-  </div>
-</div>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ staggerChildren: 0.1 }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {filteredBlogs.map(blog => (
+          <div className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow h-full overflow-hidden">
+            <img
+              src={blog.image}
+              alt={blog.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-xl font-semibold">{blog.title}</h2>
+                <span className="text-sm text-gray-500">
+                  {new Date(blog.date).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="space-y-4">
+                <p className="text-gray-600 line-clamp-2">{blog.excerpt}</p>
+                <div className="flex justify-between items-center">
+                  <a key={blog.id}
+                      href={blog.filePath}
+                      onClick={(e) => handleBlogClick(blog, e)} 
+                      className="text-blue-500 hover:text-blue-600 transition-all 
+                                  duration-300 hover:translate-x-1">
+                    Read More →
+                  </a>
+                  <button
+                    onClick={(e) => handleLike(blog.id, e)}
+                    className="flex items-center gap-2 text-gray-600 hover:text-red-500 
+                    transition-colors"
+                  >
+                    <Heart 
+                      size={20} 
+                      className={likes[blog.id] ? 'fill-red-500 text-red-500' : ''} 
+                    />
+                    <span>{likes[blog.id] || 0}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 };
+
 
 
 export default PortfolioWebsite;
