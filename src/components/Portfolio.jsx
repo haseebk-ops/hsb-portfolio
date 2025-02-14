@@ -1155,8 +1155,6 @@ const CertificateSection = () => {
 // };
 
 
-
-
 const BlogSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -1173,13 +1171,13 @@ const BlogSection = () => {
 
   const blogs = [
     {
-    id: 1,
-    title: "Understanding SQL Joins",
-    category: "Data Analysis",
-    date: "2025-02-06",
-    image: "https://media.licdn.com/dms/image/v2/D5622AQETuTSUAvnKVA/feedshare-shrink_2048_1536/B56ZSHvakgHQAo-/0/1737444143590?e=1741824000&v=beta&t=xe_cMUG_eHAtZY3EIj0A2sEfRO2Wpd5uXz1y0_xey88",
-    excerpt: "SQL Joins are a fundamental concept in database...",
-    filePath: "/blogPosts/SQL Joins.html"
+      id: 1,
+      title: "Understanding SQL Joins",
+      category: "Data Analysis",
+      date: "2025-02-06",
+      image: "https://media.licdn.com/dms/image/v2/D5622AQETuTSUAvnKVA/feedshare-shrink_2048_1536/B56ZSHvakgHQAo-/0/1737444143590?e=1741824000&v=beta&t=xe_cMUG_eHAtZY3EIj0A2sEfRO2Wpd5uXz1y0_xey88",
+      excerpt: "SQL Joins are a fundamental concept in database...",
+      filePath: "/blogPosts/SQL Joins.html"
     },
   ];
 
@@ -1226,12 +1224,14 @@ const BlogSection = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50 overflow-y-auto bg-gray-50 p-6"
+        style={{ overflow: 'hidden' }} // Prevent parent scroll
       >
         <motion.div 
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8"
+          className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8 overflow-y-auto" // Allow modal to scroll
+          style={{ maxHeight: '100vh' }} // Ensure modal doesn't exceed viewport height
         >
           <button 
             onClick={() => setCurrentBlog(null)}
